@@ -3,425 +3,1335 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MyTenderApp — Interactive Mockup</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MyTenderApp</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;background:#0a0a0f;font-family:'DM Sans',sans-serif;overflow:hidden;}
-
-/* ── OUTER SHELL ── */
-.shell{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;padding:12px 0 24px;}
-
-/* toggle row */
-.tog-row{display:flex;gap:6px;margin-bottom:12px;padding:0 8px;}
-.tog{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:1.2px;padding:7px 13px;border-radius:8px;border:1.5px solid;cursor:pointer;background:transparent;transition:background .18s;white-space:nowrap;}
-.tog-p{border-color:#ff5a1a;color:#ff5a1a;}.tog-p.on{background:rgba(255,90,26,.18);}
-.tog-b{border-color:#ff4081;color:#ff4081;}.tog-b.on{background:rgba(255,64,129,.15);}
-.tog-v{border-color:#00e676;color:#00e676;}.tog-v.on{background:rgba(0,230,118,.13);}
-
-/* ── PHONE FRAME ── */
-.phone{width:min(340px,96vw);background:#0d0d14;border-radius:36px;border:2px solid #2a2a3a;overflow:hidden;display:flex;flex-direction:column;height:min(680px,88vh);}
-.sbar{display:flex;justify-content:space-between;padding:9px 20px 3px;font-size:11px;color:#666;flex-shrink:0;}
-
-/* ── SCREENS ── */
-.scr{display:none;flex-direction:column;flex:1;overflow:hidden;}
-.scr.on{display:flex;}
-.sp{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 14px 14px;}
-.sp::-webkit-scrollbar{display:none;}
-
-/* ── HEADER ── */
-.hdr{display:flex;flex-direction:column;align-items:center;padding:8px 16px 4px;flex-shrink:0;}
-.appname{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;}
-.sub{font-size:10px;color:#555;letter-spacing:1px;margin-top:1px;}
-.scrt{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#999;padding:6px 14px 1px;flex-shrink:0;}
-
-/* ── NAV BAR ── */
-.nb{display:flex;background:#11111c;border-top:1px solid #1e1e2e;padding:5px 0 9px;flex-shrink:0;}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 0;opacity:.38;transition:opacity .18s;}
-.ni.on{opacity:1;}
-.ni i{font-size:19px;}
-.nl{font-size:9px;font-weight:600;letter-spacing:.4px;}
-.c-or i,.c-or .nl{color:#ff5a1a;}
-.c-pk i,.c-pk .nl{color:#ff4081;}
-.c-gn i,.c-gn .nl{color:#00e676;}
-.c-bl i,.c-bl .nl{color:#40c4ff;}
-
-/* ── TABS ── */
-.tab-r{display:flex;border-bottom:1px solid #1e1e2e;padding:0 14px;gap:12px;flex-shrink:0;}
-.tab{font-size:10px;font-weight:600;padding:6px 0;color:#333;cursor:pointer;border-bottom:2px solid transparent;letter-spacing:.4px;}
-.t-or{color:#ff5a1a;border-bottom-color:#ff5a1a;}
-.t-pk{color:#ff4081;border-bottom-color:#ff4081;}
-.t-gn{color:#00e676;border-bottom-color:#00e676;}
-.t-bl{color:#40c4ff;border-bottom-color:#40c4ff;}
-
-/* ── CARDS & LAYOUT ── */
-.cd{background:#13131f;border:1px solid #1e1e2e;border-radius:11px;padding:12px;margin-bottom:9px;}
-.sec{font-size:10px;color:#555;letter-spacing:1px;font-weight:600;margin-bottom:7px;}
-.g2{display:flex;gap:7px;}
-.mg{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:9px;}
-.mc{background:#13131f;border:1px solid #1e1e2e;border-radius:9px;padding:10px;text-align:center;}
-.mn{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;}
-.ml{font-size:9px;color:#555;letter-spacing:.5px;margin-top:2px;}
-.div{height:1px;background:#1e1e2e;margin:8px 0;}
-.sr{display:flex;justify-content:space-between;align-items:center;padding:4px 0;}
-.sl{font-size:11px;color:#555;}
-.sv{font-size:12px;font-weight:600;color:#ccc;}
-.ri{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid #1e1e2e;}
-.ri:last-child{border-bottom:none;}
-
-/* ── BUTTONS ── */
-.btn{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1.3px;border-radius:7px;padding:8px;cursor:pointer;width:100%;background:transparent;text-align:center;border:1.5px solid;transition:background .15s;}
-.bo{border-color:#ff5a1a;color:#ff5a1a;}.bo:active{background:rgba(255,90,26,.15);}
-.bp{border-color:#ff4081;color:#ff4081;}.bp:active{background:rgba(255,64,129,.12);}
-.bg{border-color:#00e676;color:#00e676;}.bg:active{background:rgba(0,230,118,.1);}
-.bb{border-color:#40c4ff;color:#40c4ff;}.bb:active{background:rgba(64,196,255,.1);}
-
-/* ── BADGES ── */
-.bdg{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;letter-spacing:.4px;white-space:nowrap;}
-.do{background:rgba(255,90,26,.14);color:#ff5a1a;border:1px solid rgba(255,90,26,.28);}
-.dp{background:rgba(255,64,129,.12);color:#ff4081;border:1px solid rgba(255,64,129,.28);}
-.dg{background:rgba(0,230,118,.11);color:#00e676;border:1px solid rgba(0,230,118,.28);}
-.db{background:rgba(64,196,255,.11);color:#40c4ff;border:1px solid rgba(64,196,255,.28);}
-.dz{background:rgba(136,135,128,.11);color:#555;border:1px solid #222;}
-
-/* ── MISC ── */
-.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;}
-.pb{height:5px;background:#1e1e2e;border-radius:8px;overflow:hidden;}
-.pf{height:100%;border-radius:8px;background:#ff5a1a;}
-.sb{background:#1a0a1a;display:flex;align-items:center;justify-content:space-between;border-left:3px solid #ff5a1a;border-radius:0 7px 7px 0;padding:8px 10px;margin-bottom:7px;}
-.bch{display:flex;align-items:flex-end;gap:5px;height:54px;}
-.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;}
-.bf{width:100%;border-radius:3px 3px 0 0;}
-.bl{font-size:8px;color:#333;}
-.tgl{width:34px;height:18px;border-radius:9px;background:#1e1e2e;border:1px solid #2a2a3a;cursor:pointer;position:relative;transition:background .18s;flex-shrink:0;}
-.tgl.on{background:rgba(0,230,118,.22);border-color:#00e676;}
-.tgl::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#444;transition:all .18s;}
-.tgl.on::after{left:18px;background:#00e676;}
-.dot{width:5px;height:5px;border-radius:50%;background:#ff5a1a;display:inline-block;animation:pl 1.4s infinite;}
-.dotg{background:#00e676;}
-@keyframes pl{0%,100%{opacity:1}50%{opacity:.25}}
-.chip{display:flex;align-items:center;gap:5px;background:rgba(255,90,26,.09);border:1px solid rgba(255,90,26,.22);border-radius:18px;padding:3px 10px;font-size:10px;color:#ff5a1a;font-weight:600;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --or:#ff5a1a;--gn:#00e676;--pk:#ff4081;--bl:#40c4ff;--pu:#9c6fea;
+  --bg:#0d0d14;--cd:#13131f;--eg:#1e1e2e;
+  --tx:#e8e0d0;--mu:#666;--dm:#333;--nb:54px;
+}
+html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-family:"DM Sans",sans-serif;color:var(--tx);-webkit-font-smoothing:antialiased;}
+.screen{display:none;position:fixed;inset:0;bottom:var(--nb);overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg);}
+.screen::-webkit-scrollbar{display:none;}
+.screen.active{display:block;}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:10px 20px 4px;font-size:11px;color:var(--mu);position:sticky;top:0;background:var(--bg);z-index:50;}
+.bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nb);background:#11111c;border-top:1px solid var(--eg);display:none;z-index:100;}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;opacity:.3;transition:opacity .18s;padding:4px 0;border:none;background:transparent;}
+.ni.active{opacity:1;}
+.ni i{font-size:19px;color:var(--or);}
+.nl{font-size:8px;font-weight:600;letter-spacing:.4px;color:var(--or);text-transform:uppercase;}
+.ni.gn i,.ni.gn .nl{color:var(--gn);}
+.ni.pk i,.ni.pk .nl{color:var(--pk);}
+.ni.bl i,.ni.bl .nl{color:var(--bl);}
+.ni.pu i,.ni.pu .nl{color:var(--pu);}
+.shdr{display:flex;align-items:center;justify-content:space-between;padding:8px 16px 4px;}
+.stitle{font-family:"Bebas Neue",sans-serif;font-size:17px;letter-spacing:2px;color:#ccc;}
+.appname{font-family:"Bebas Neue",sans-serif;font-size:22px;letter-spacing:3px;color:var(--or);text-shadow:0 0 20px rgba(255,90,26,.4);}
+.chip{display:inline-flex;align-items:center;gap:5px;background:rgba(255,90,26,.08);border:1px solid rgba(255,90,26,.22);border-radius:20px;padding:3px 10px;font-size:10px;color:var(--or);font-weight:600;margin-bottom:10px;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--or);animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.dhdr{text-align:center;padding:8px 16px 0;}
+.dctr{display:flex;justify-content:center;gap:5px;padding:3px 0 6px;}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--eg);transition:background .2s,transform .2s;}
+.cdot.on{background:var(--or);transform:scale(1.4);}
+.dwrap{position:relative;width:100%;height:400px;padding:0 16px;margin-bottom:8px;}
+.scard{position:absolute;inset:0;margin:0 16px;border-radius:14px;overflow:hidden;background:var(--cd);border:1px solid var(--eg);box-shadow:0 20px 60px rgba(0,0,0,.7);cursor:grab;user-select:none;touch-action:none;}
+.scard:active{cursor:grabbing;}
+.cphoto{width:100%;height:270px;object-fit:cover;display:block;}
+.cphoto-ph{width:100%;height:270px;background:linear-gradient(135deg,#0f0f1a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:72px;color:rgba(255,90,26,.2);}
+.cgrad{position:absolute;bottom:90px;left:0;right:0;height:110px;background:linear-gradient(transparent,rgba(13,13,20,.96));pointer-events:none;}
+.cinfo{position:absolute;bottom:0;left:0;right:0;padding:10px 14px 12px;background:var(--cd);}
+.cname{font-family:"Bebas Neue",sans-serif;font-size:21px;letter-spacing:1px;color:#fff;line-height:1;margin-bottom:2px;}
+.cbar{font-size:11px;font-weight:500;margin-bottom:3px;}
+.cvibe{font-size:10px;font-weight:300;color:var(--mu);line-height:1.4;font-style:italic;}
+.stamp{position:absolute;top:30px;font-family:"Bebas Neue",sans-serif;font-size:42px;letter-spacing:3px;border:4px solid;border-radius:4px;padding:2px 12px;opacity:0;pointer-events:none;}
+.sl{left:14px;color:var(--gn);border-color:var(--gn);transform:rotate(-15deg);}
+.sn{right:14px;color:#f44;border-color:#f44;transform:rotate(15deg);}
+.sact{display:flex;justify-content:center;gap:20px;padding:0 16px 4px;}
+.abtn{width:54px;height:54px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--cd);transition:transform .15s;font-size:20px;}
+.abtn:hover{transform:scale(1.08);}
+.abtn:active{transform:scale(.93);}
+.an{border-color:#f44;color:#f44;}
+.al{border-color:var(--gn);color:var(--gn);}
+.shint{text-align:center;font-size:10px;color:var(--dm);letter-spacing:.06em;padding-bottom:4px;}
+.dempty{display:none;text-align:center;padding:40px 24px;}
+.dempty.show{display:block;}
+.fwrap{padding:0 16px 24px;}
+.fsub{font-size:13px;font-weight:300;color:var(--mu);line-height:1.6;margin-bottom:18px;}
+.fld{margin-bottom:12px;}
+.flbl{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--dm);margin-bottom:5px;display:flex;align-items:center;gap:6px;transition:color .2s;}
+.fld:focus-within .flbl{color:var(--or);}
+.ptag{font-size:9px;color:#2a2a3a;background:#1a1a2a;padding:1px 6px;border-radius:10px;text-transform:none;font-weight:400;}
+input,textarea,select{width:100%;background:#0f0f1a;border:1px solid #2a2a3a;border-radius:8px;padding:10px 13px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:300;color:var(--tx);outline:none;-webkit-appearance:none;caret-color:var(--or);transition:border-color .2s,box-shadow .2s;resize:none;}
+input::placeholder,textarea::placeholder{color:#333;font-style:italic;}
+input:focus,textarea:focus,select:focus{border-color:rgba(255,90,26,.5);box-shadow:0 0 0 3px rgba(255,90,26,.1);}
+input.err{border-color:rgba(255,64,64,.5);}
+.errmsg{display:none;font-size:11px;color:#f66;margin-top:4px;}
+.errmsg.show{display:block;}
+.chcnt{font-size:10px;color:var(--dm);text-align:right;margin-top:3px;}
+.pzone{width:100%;height:140px;border:1.5px dashed #2a2a3a;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;margin-bottom:12px;position:relative;overflow:hidden;transition:border-color .2s;background:#0f0f1a;}
+.pzone:hover{border-color:rgba(255,90,26,.4);}
+.pzone.hp{border-color:rgba(255,90,26,.5);}
+.pzimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+.pzimg.show{display:block;}
+.pzov{position:absolute;inset:0;background:rgba(13,13,20,.7);display:none;align-items:center;justify-content:center;flex-direction:column;gap:4px;}
+.pzone.hp .pzov{display:flex;}
+.uprog{display:none;align-items:center;gap:8px;font-size:12px;color:var(--mu);margin-bottom:8px;}
+.uprog.show{display:flex;}
+.bor{width:100%;padding:12px;background:linear-gradient(135deg,var(--or),#c04000);border:none;border-radius:8px;font-family:"Bebas Neue",sans-serif;font-size:15px;letter-spacing:2px;color:#fff;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 20px rgba(255,90,26,.25);margin-top:6px;}
+.bor:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,90,26,.4);}
+.bor:disabled{opacity:.6;cursor:not-allowed;}
+.bgn{width:100%;padding:12px;background:linear-gradient(135deg,var(--gn),#009944);border:none;border-radius:8px;font-family:"Bebas Neue",sans-serif;font-size:15px;letter-spacing:2px;color:#0d0d14;cursor:pointer;box-shadow:0 4px 20px rgba(0,230,118,.2);margin-top:6px;}
+.bbl{width:100%;padding:12px;background:linear-gradient(135deg,var(--bl),#0080aa);border:none;border-radius:8px;font-family:"Bebas Neue",sans-serif;font-size:15px;letter-spacing:2px;color:#0d0d14;cursor:pointer;box-shadow:0 4px 20px rgba(64,196,255,.2);margin-top:6px;}
+.bpu{width:100%;padding:12px;background:linear-gradient(135deg,var(--pu),#6040b0);border:none;border-radius:8px;font-family:"Bebas Neue",sans-serif;font-size:15px;letter-spacing:2px;color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(156,111,234,.2);margin-top:6px;}
+.bout{width:100%;padding:11px;background:transparent;border:1.5px solid var(--eg);border-radius:8px;font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:1.5px;color:var(--mu);cursor:pointer;transition:border-color .2s,color .2s;margin-top:8px;}
+.bout:hover{border-color:var(--or);color:var(--or);}
+.binn{display:flex;align-items:center;justify-content:center;gap:8px;position:relative;z-index:1;}
+.spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.succ{display:none;text-align:center;padding:24px;animation:fup .6s cubic-bezier(.22,1,.36,1) both;}
+.succ.show{display:block;}
+@keyframes fup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.sring{width:60px;height:60px;border-radius:50%;border:1.5px solid rgba(0,230,118,.5);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:rp 2.5s ease infinite;}
+@keyframes rp{0%,100%{box-shadow:0 0 0 0 rgba(0,230,118,.25)}50%{box-shadow:0 0 0 14px rgba(0,230,118,0)}}
+.chk{stroke-dasharray:26;stroke-dashoffset:26;animation:dc .55s ease .3s forwards;}
+@keyframes dc{to{stroke-dashoffset:0}}
+.succ-title{font-family:"Bebas Neue",sans-serif;font-size:24px;letter-spacing:2px;color:var(--tx);margin-bottom:8px;}
+.succ-title span{color:var(--gn);}
+.succ-body{font-size:13px;font-weight:300;color:var(--mu);line-height:1.7;margin-bottom:20px;}
+.pcard{background:var(--cd);border:1px solid var(--eg);border-radius:12px;overflow:hidden;margin-bottom:10px;}
+.pphoto{width:100%;height:180px;object-fit:cover;display:block;}
+.pph{width:100%;height:180px;background:linear-gradient(135deg,#0f0f1a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:56px;color:rgba(255,90,26,.2);}
+.pinfo{padding:12px 14px;}
+.pnm{font-family:"Bebas Neue",sans-serif;font-size:19px;letter-spacing:1px;color:var(--tx);margin-bottom:2px;}
+.pbr{font-size:11px;font-weight:500;margin-bottom:4px;}
+.pvb{font-size:11px;font-weight:300;color:var(--mu);font-style:italic;line-height:1.5;}
+.srow{display:flex;gap:8px;margin-bottom:10px;}
+.scrd{flex:1;background:var(--cd);border:1px solid var(--eg);border-radius:10px;padding:10px;text-align:center;}
+.snum{font-family:"Bebas Neue",sans-serif;font-size:22px;line-height:1;margin-bottom:2px;}
+.slbl{font-size:9px;color:var(--mu);letter-spacing:.5px;text-transform:uppercase;font-weight:600;}
+.icard{background:var(--cd);border:1px solid var(--eg);border-radius:10px;padding:12px;margin-bottom:8px;}
+.irow{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--eg);font-size:12px;}
+.irow:last-child{border-bottom:none;}
+.ilbl{color:var(--mu);font-size:11px;}
+.ival{color:var(--tx);font-weight:500;font-size:12px;}
+.pinwrap{padding:24px;text-align:center;}
+.pinico{font-size:38px;margin-bottom:12px;}
+.pintitle{font-family:"Bebas Neue",sans-serif;font-size:20px;letter-spacing:2px;color:var(--tx);margin-bottom:6px;}
+.pinsub{font-size:12px;color:var(--mu);margin-bottom:18px;line-height:1.6;}
+.pininp{width:100%;background:#0f0f1a;border:1px solid #2a2a3a;border-radius:8px;padding:12px;font-family:"DM Sans",sans-serif;font-size:22px;font-weight:300;color:var(--tx);outline:none;text-align:center;letter-spacing:8px;caret-color:var(--or);-webkit-appearance:none;}
+.pininp:focus{border-color:rgba(255,90,26,.5);box-shadow:0 0 0 3px rgba(255,90,26,.1);}
+.pinerr{font-size:11px;color:#f66;margin-top:6px;display:none;}
+.pinerr.show{display:block;}
+.rcard{background:var(--cd);border:1px solid var(--eg);border-radius:10px;padding:11px;margin-bottom:8px;}
+.rrow{display:flex;align-items:center;gap:10px;}
+.rav{width:38px;height:38px;border-radius:50%;background:rgba(255,90,26,.1);border:1px solid rgba(255,90,26,.2);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:13px;color:var(--or);flex-shrink:0;}
+.rnm{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:1px;}
+.rdt{font-size:10px;color:var(--mu);}
+.racts{display:flex;gap:8px;margin-top:8px;}
+.rappr{flex:1;padding:7px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);border-radius:6px;font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:1px;color:var(--gn);cursor:pointer;}
+.rdeny{flex:1;padding:7px;background:rgba(255,64,64,.08);border:1px solid rgba(255,64,64,.25);border-radius:6px;font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:1px;color:#f66;cursor:pointer;}
+.rst{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.rapst{background:rgba(0,230,118,.1);color:var(--gn);border:1px solid rgba(0,230,118,.3);}
+.rdnst{background:rgba(255,64,64,.08);color:#f66;border:1px solid rgba(255,64,64,.25);}
+.atab{flex:1;padding:7px 4px;background:transparent;border:none;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;}
+.atab.on{color:var(--or);border-bottom-color:var(--or);}
+.divr{display:flex;align-items:center;gap:12px;margin:12px 0 10px;}
+.dl{flex:1;height:1px;background:var(--eg);}
+.dd{width:4px;height:4px;border-radius:50%;background:var(--or);opacity:.5;}
+.ldst{text-align:center;padding:40px 24px;}
+.ldsp{width:24px;height:24px;border:3px solid var(--eg);border-top-color:var(--or);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px;}
+.ldtx{font-size:12px;color:var(--mu);}
+.toast{position:fixed;bottom:calc(var(--nb) + 12px);left:50%;transform:translateX(-50%) translateY(10px);background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.3);color:var(--gn);font-size:12px;font-weight:500;padding:8px 16px;border-radius:100px;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:300;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.or{background:rgba(255,90,26,.12);border-color:rgba(255,90,26,.3);color:var(--or);}
+.landwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center;}
+.rtitle{font-family:"Bebas Neue",sans-serif;font-size:28px;letter-spacing:2px;color:var(--tx);margin-bottom:5px;}
+.rtitle span{color:var(--or);}
+.rsub{font-size:12px;color:var(--mu);margin-bottom:24px;line-height:1.6;}
+.rbtn{width:100%;max-width:320px;padding:15px;border-radius:10px;font-family:"Bebas Neue",sans-serif;font-size:16px;letter-spacing:2px;cursor:pointer;margin-bottom:10px;border:2px solid;transition:transform .15s;background:transparent;display:block;}
+.rbtn:hover{transform:translateY(-2px);}
+.rt{border-color:var(--or);color:var(--or);}
+.rp{border-color:var(--bl);color:var(--bl);}
+.rpl{border-color:var(--pk);color:var(--pk);}
+.ra{border-color:var(--dm);color:var(--mu);padding:10px;font-size:13px;}
+.ra:hover{border-color:var(--or);color:var(--or);}
+.rtag{font-size:10px;font-weight:400;color:var(--mu);margin-top:2px;font-family:"DM Sans",sans-serif;}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:flex-end;justify-content:center;}
+.modal-bg.show{display:flex;}
+.modal{width:100%;max-width:480px;background:var(--cd);border-radius:16px 16px 0 0;padding:0 0 28px;max-height:88vh;overflow-y:auto;}
+.modal::-webkit-scrollbar{display:none;}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal.show{animation:slideup .3s cubic-bezier(.22,1,.36,1);}
+.modal-handle{width:36px;height:4px;background:#333;border-radius:2px;margin:10px auto 14px;}
+.modal-photo{width:100%;height:200px;object-fit:cover;display:block;}
+.modal-ph{width:100%;height:200px;background:linear-gradient(135deg,#0f0f1a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:64px;color:rgba(255,90,26,.2);}
+.modal-info{padding:12px 18px;}
+.modal-name{font-family:"Bebas Neue",sans-serif;font-size:22px;letter-spacing:1px;color:var(--tx);margin-bottom:2px;}
+.modal-bar{font-size:11px;font-weight:500;margin-bottom:5px;}
+.modal-vibe{font-size:11px;font-weight:300;color:var(--mu);font-style:italic;line-height:1.5;margin-bottom:12px;}
+.modal-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.plist-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--eg);cursor:pointer;transition:opacity .15s;}
+.plist-item:last-child{border-bottom:none;}
+.plist-item:hover{opacity:.75;}
+.plist-av{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.plist-av-ph{width:42px;height:42px;border-radius:50%;background:rgba(255,90,26,.1);border:1px solid rgba(255,90,26,.2);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:13px;color:var(--or);flex-shrink:0;}
+.plist-nm{font-size:12px;font-weight:600;color:var(--tx);}
+.plist-dt{font-size:10px;color:var(--mu);}
+.home-tile{background:var(--cd);border:1.5px solid var(--eg);border-radius:12px;padding:16px 12px;cursor:pointer;transition:transform .15s,border-color .2s;text-align:center;}
+.home-tile:hover{transform:translateY(-2px);}
+.home-tile:active{transform:scale(.97);}
+.shift-tog{width:44px;height:24px;border-radius:12px;background:var(--eg);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
+.shift-knob{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:left .2s;}
+.badge-shift{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(0,230,118,.12);color:var(--gn);border:1px solid rgba(0,230,118,.3);border-radius:20px;padding:2px 6px;margin-left:5px;vertical-align:middle;}
+.badge-live{font-size:9px;font-weight:600;letter-spacing:.08em;background:rgba(0,230,118,.12);color:var(--gn);border:1px solid rgba(0,230,118,.3);border-radius:20px;padding:2px 7px;}
+.place-banner{width:100%;height:160px;object-fit:cover;display:block;border-radius:10px;margin-bottom:12px;}
+.place-logo{width:64px;height:64px;border-radius:10px;object-fit:contain;background:#fff;flex-shrink:0;}
+.affil-card{background:var(--cd);border:1px solid var(--eg);border-radius:12px;padding:18px;margin-bottom:12px;cursor:pointer;transition:transform .15s,border-color .2s;}
+.affil-card:hover{transform:translateY(-2px);border-color:var(--or);}
+.affil-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:10px;}
+.sec-label{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--mu);margin-bottom:8px;}
+.follow-section{background:var(--cd);border:1px solid var(--eg);border-radius:10px;padding:12px;margin-bottom:10px;}
+.disc-tabs{display:flex;gap:6px;justify-content:center;margin-bottom:6px;}
+.disc-tab{padding:5px 14px;border-radius:20px;font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:1px;border:1.5px solid;cursor:pointer;transition:background .15s,color .15s;}
 </style>
 </head>
 <body>
-<div class="shell">
-  <div class="tog-row">
-    <button class="tog tog-p on" id="tg-p" onclick="setMode('patron')">🍸 PATRON</button>
-    <button class="tog tog-b" id="tg-b" onclick="setMode('bartender')">🍹 BARTENDER</button>
-    <button class="tog tog-v" id="tg-v" onclick="setMode('venue')">🏪 VENUE MGR</button>
+
+<!-- LANDING -->
+<div class="screen active" id="screen-landing">
+  <div class="landwrap">
+    <div style="margin-bottom:20px;">
+      <svg width="42" height="42" viewBox="0 0 32 32" fill="none" style="display:block;margin:0 auto 10px;">
+        <path d="M9 5l2.5 12L16 22l4.5-5L23 5H9z" stroke="#ff5a1a" stroke-width="1.3" stroke-linejoin="round" fill="none"/>
+        <path d="M13 22v4M19 22v4M11 26h10" stroke="#ff5a1a" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M9 5h14" stroke="#ff5a1a" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <div class="appname" style="display:block;text-align:center;">mytenderapp</div>
+    </div>
+    <div class="rtitle">Welcome.<br>Who are <span>you?</span></div>
+    <div class="rsub">Tell us who you are to get the right experience.</div>
+    <button class="rbtn rt" onclick="setRole('tender')">🍸 I'm a Tender<div class="rtag">Create a profile · Build your following</div></button>
+    <button class="rbtn rp" onclick="setRole('patron')">👀 I'm a Patron<div class="rtag">Discover bartenders · Send follow requests</div></button>
+    <button class="rbtn rpl" onclick="setRole('place')">🏢 I'm a Place<div class="rtag">Create your venue profile · Manage followers</div></button>
+    <button class="rbtn ra" onclick="goAdmin()">⚙️ Admin Access<div class="rtag">Partners only</div></button>
   </div>
-
-  <div class="phone">
-    <div class="sbar">
-      <span id="clock">9:41</span>
-      <span style="display:flex;gap:3px;align-items:center;">
-        <i class="ti ti-wifi" style="font-size:11px;"></i>
-        <i class="ti ti-battery-2" style="font-size:11px;"></i>
-      </span>
-    </div>
-
-    <!-- ══════════ PATRON ══════════ -->
-    <div class="scr on" id="p-home">
-      <div class="hdr">
-        <div style="font-size:20px;">🍸</div>
-        <div class="appname" style="color:#ff5a1a;">mytenderapp</div>
-        <div class="chip" style="margin-top:5px;"><span class="dot"></span>&nbsp;47 tenders on shift tonight</div>
-      </div>
-      <div class="sp">
-        <button class="btn bo" style="margin-bottom:10px;" onclick="pNav('p-find')">FIND YOUR TENDER</button>
-        <div class="mg">
-          <div class="mc" onclick="pNav('p-find')" style="cursor:pointer;"><i class="ti ti-user-search" style="font-size:18px;color:#ff5a1a;"></i><div style="font-size:11px;color:#ff5a1a;font-weight:600;margin-top:4px;">Find Tender</div></div>
-          <div class="mc" onclick="pNav('p-pour')" style="cursor:pointer;"><i class="ti ti-trophy" style="font-size:18px;color:#00e676;"></i><div style="font-size:11px;color:#00e676;font-weight:600;margin-top:4px;">Pour Score</div></div>
-          <div class="mc" onclick="pNav('p-wing')" style="cursor:pointer;"><i class="ti ti-users" style="font-size:18px;color:#40c4ff;"></i><div style="font-size:11px;color:#40c4ff;font-weight:600;margin-top:4px;">Wingers</div></div>
-          <div class="mc" style="cursor:pointer;"><i class="ti ti-sparkles" style="font-size:18px;color:#ff4081;"></i><div style="font-size:11px;color:#ff4081;font-weight:600;margin-top:4px;">Specials</div></div>
-        </div>
-        <button class="btn bg" style="margin-bottom:9px;">MY FAVORITES</button>
-        <div class="cd">
-          <div class="sec">TONIGHT'S HOT SPOTS</div>
-          <div class="ri"><div class="av" style="width:34px;height:34px;background:rgba(255,90,26,.12);color:#ff5a1a;">MJ</div><div style="flex:1;"><div style="font-size:12px;color:#ccc;font-weight:600;">Moe Joe's</div><div style="font-size:10px;color:#555;">3 tenders on shift</div></div><span class="bdg do">5 mi</span></div>
-          <div class="ri"><div class="av" style="width:34px;height:34px;background:rgba(64,196,255,.12);color:#40c4ff;">CB</div><div style="flex:1;"><div style="font-size:12px;color:#ccc;font-weight:600;">City Bar</div><div style="font-size:10px;color:#555;">2 tenders on shift</div></div><span class="bdg db">2 mi</span></div>
-        </div>
-        <button class="btn bp" onclick="pNav('p-aff')">AFFILIATES &amp; PARTNERS</button>
-      </div>
-    </div>
-
-    <div class="scr" id="p-find">
-      <div class="hdr"><div class="appname" style="color:#ff5a1a;">mytenderapp</div></div>
-      <div class="scrt">FIND YOUR TENDER</div>
-      <div class="tab-r"><div class="tab t-or">On Shift</div><div class="tab">Browse All</div><div class="tab">Near Me</div></div>
-      <div class="sp">
-        <div style="background:#13131f;border:1.5px solid #1e1e2e;border-radius:14px;overflow:hidden;margin-bottom:10px;cursor:pointer;" onclick="pNav('p-profile')">
-          <div style="height:148px;background:#0f1a2e;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;">
-            👩‍🍳
-            <div style="position:absolute;top:8px;right:8px;"><span class="bdg dg">ON SHIFT</span></div>
-            <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.75);padding:8px 12px;">
-              <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:1px;">Emily W.</div>
-              <div style="font-size:11px;color:#00e676;">City Bar · 6:00 PM–2:00 AM</div>
-            </div>
-          </div>
-          <div style="padding:9px 12px;">
-            <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px;"><span class="bdg do">Cocktails</span><span class="bdg dp">Craft Beer</span><span class="bdg db">Mixologist</span></div>
-            <div class="pb"><div class="pf" style="width:72%;"></div></div>
-            <div style="display:flex;justify-content:space-between;margin-top:3px;"><span style="font-size:9px;color:#555;">Pour Score</span><span style="font-size:9px;color:#ff5a1a;font-weight:600;">720 pts</span></div>
-          </div>
-        </div>
-        <div style="display:flex;gap:14px;justify-content:center;margin-bottom:10px;">
-          <button style="width:48px;height:48px;border-radius:50%;border:2px solid #444;color:#555;background:transparent;font-size:20px;cursor:pointer;" aria-label="Skip"><i class="ti ti-x"></i></button>
-          <button style="width:48px;height:48px;border-radius:50%;border:2px solid #00e676;color:#00e676;background:transparent;font-size:20px;cursor:pointer;" aria-label="Follow" onclick="pNav('p-profile')"><i class="ti ti-heart"></i></button>
-          <button style="width:48px;height:48px;border-radius:50%;border:2px solid #ff4081;color:#ff4081;background:transparent;font-size:20px;cursor:pointer;" aria-label="Super follow"><i class="ti ti-star"></i></button>
-        </div>
-        <div class="cd">
-          <div class="ri"><div class="av" style="width:36px;height:36px;background:rgba(255,64,129,.1);color:#ff4081;">MR</div><div style="flex:1;"><div style="font-size:12px;color:#ccc;font-weight:600;">Marco R.</div><div style="font-size:10px;color:#555;">Velvet Lounge · until 3 AM</div></div><span class="bdg dp">ON SHIFT</span></div>
-          <div class="ri"><div class="av" style="width:36px;height:36px;background:rgba(64,196,255,.1);color:#40c4ff;">JK</div><div style="flex:1;"><div style="font-size:12px;color:#ccc;font-weight:600;">Jordan K.</div><div style="font-size:10px;color:#555;">Moe Joe's · 8 PM–1 AM</div></div><span class="bdg db">TONIGHT</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="scr" id="p-profile">
-      <div style="height:155px;background:#0f1a2e;display:flex;align-items:flex-end;padding:12px;flex-shrink:0;position:relative;">
-        <div style="font-size:58px;position:absolute;top:14px;left:50%;transform:translateX(-50%);">👩‍🍳</div>
-        <div style="flex:1;"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;">Emily W.</div><div style="font-size:11px;color:#00e676;">City Bar · Downtown</div></div>
-        <span class="bdg dg">ON SHIFT</span>
-      </div>
-      <div class="sp">
-        <div class="g2" style="margin-bottom:9px;"><button class="btn bg" style="flex:1;">FOLLOW</button><button class="btn bo" style="flex:1;">ALERT ME</button></div>
-        <div class="cd"><div class="sec">TONIGHT'S SHIFT</div><div style="display:flex;align-items:center;gap:7px;"><i class="ti ti-clock" style="font-size:14px;color:#ff5a1a;"></i><span style="font-size:12px;color:#ccc;">6:00 PM – 2:00 AM</span><span class="bdg do" style="margin-left:auto;">City Bar</span></div><div class="div"></div><div style="display:flex;gap:5px;"><span class="bdg do">Cocktails</span><span class="bdg dp">Craft Beer</span><span class="bdg db">Mixologist</span></div></div>
-        <div class="cd"><div class="sec">POUR SCORE</div><div style="display:flex;align-items:center;gap:10px;"><div style="flex:1;"><div class="pb"><div class="pf" style="width:72%;"></div></div><div style="display:flex;justify-content:space-between;margin-top:3px;"><span style="font-size:9px;color:#555;">720/1000 pts</span><span style="font-size:9px;color:#ff4081;">Top Shelf</span></div></div><div style="text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#ff5a1a;">342</div><div style="font-size:9px;color:#555;">followers</div></div></div></div>
-        <div class="cd"><div class="sec">UPCOMING SHIFTS</div><div class="sr"><span class="sl">Thu May 21</span><span style="font-size:11px;color:#00e676;">City Bar · 7PM–2AM</span></div><div class="sr"><span class="sl">Fri May 22</span><span style="font-size:11px;color:#00e676;">City Bar · 6PM–3AM</span></div></div>
-        <button class="btn bp">VIEW BAR — CITY BAR</button>
-      </div>
-    </div>
-
-    <div class="scr" id="p-wing">
-      <div class="hdr"><div style="font-size:18px;">🍻</div><div class="appname" style="color:#40c4ff;">WINGERS</div></div>
-      <div class="tab-r"><div class="tab t-bl">My Circle</div><div class="tab">Out Tonight</div><div class="tab">Invite</div></div>
-      <div class="sp">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:10px;color:#444;letter-spacing:1px;font-weight:600;">8 WINGERS ACTIVE</span><span class="dot dotg"></span></div>
-        <div class="cd">
-          <div class="ri"><div class="av" style="width:36px;height:36px;background:rgba(0,230,118,.1);color:#00e676;">AL</div><div style="flex:1;"><div style="font-size:12px;color:#ccc;font-weight:600;">Alex L.</div><div style="font-size:10px;color:#555;">The Velvet Lounge</div></div><span class="bdg dg">OUT NOW</span></div>
-          <div class="ri"><div class="av" style="width:36px;height:36px;background:rgba(255,64,129,.1);color:#ff4081;">JM</div><div style="flex:1;"><div style="font-size:12px;color:#ccc;font-weight:600;">Jamie M.</div><div style="font-size:10px;color:#555;">The Tipsy Turtle</div></div><span class="bdg dp">OUT NOW</span></div>
-          <div class="ri"><div class="av" style="width:36px;height:36px;background:rgba(64,196,255,.1);color:#40c4ff;">RN</div><div style="flex:1;"><div style="font-size:12px;color:#ccc;font-weight:600;">Riley N.</div><div style="font-size:10px;color:#555;">City Bar · 10 PM</div></div><span class="bdg db">GOING OUT</span></div>
-          <div class="ri"><div class="av" style="width:36px;height:36px;background:#111;color:#444;">CK</div><div style="flex:1;"><div style="font-size:12px;color:#444;font-weight:600;">Chris K.</div><div style="font-size:10px;color:#333;">Offline</div></div><span class="bdg dz">OFFLINE</span></div>
-        </div>
-        <div class="cd"><div class="sec">WINGER ALERTS</div><div style="font-size:11px;color:#ccc;margin-bottom:2px;">🍻 Alex checked in at Velvet Lounge</div><div style="font-size:10px;color:#444;margin-bottom:8px;">35 min ago</div><div style="font-size:11px;color:#ccc;margin-bottom:2px;">🎉 Jamie unlocked <span style="color:#ff4081;">Top Shelf</span></div><div style="font-size:10px;color:#444;">1 hr ago</div></div>
-        <button class="btn bb">INVITE A WINGER</button>
-      </div>
-    </div>
-
-    <div class="scr" id="p-pour">
-      <div class="hdr"><div style="font-size:18px;">🏆</div><div class="appname" style="color:#00e676;">POUR SCORE</div></div>
-      <div class="sp">
-        <div class="cd" style="text-align:center;padding:16px 12px;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:44px;color:#ff5a1a;line-height:1;">720</div>
-          <div style="font-size:10px;color:#555;letter-spacing:1px;margin-bottom:8px;">POUR SCORE POINTS</div>
-          <span class="bdg dp" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:1px;">⭐ TOP SHELF</span>
-          <div style="margin-top:10px;"><div class="pb"><div class="pf" style="width:72%;"></div></div><div style="display:flex;justify-content:space-between;margin-top:3px;"><span style="font-size:9px;color:#555;">720 pts</span><span style="font-size:9px;color:#555;">1,000 → Pour Master</span></div></div>
-        </div>
-        <div class="cd"><div class="sec">LEVEL TIERS</div>
-          <div class="sr"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">🌱</span><span style="font-size:11px;color:#666;">Rookie Sipper</span></div><span style="font-size:10px;color:#444;">0–49 pts</span></div>
-          <div class="sr"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">🍺</span><span style="font-size:11px;color:#00e676;">Regular</span></div><span style="font-size:10px;color:#444;">50–149 pts</span></div>
-          <div class="sr"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">🥂</span><span style="font-size:11px;color:#40c4ff;">On the House</span></div><span style="font-size:10px;color:#444;">150–299 pts</span></div>
-          <div class="sr"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">⭐</span><span style="font-size:11px;color:#ff4081;">Top Shelf ← YOU</span></div><span style="font-size:10px;color:#ff4081;">300–999 pts</span></div>
-          <div class="sr"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">🏆</span><span style="font-size:11px;color:#ff5a1a;">Pour Master</span></div><span style="font-size:10px;color:#444;">1,000+ pts</span></div>
-        </div>
-        <div class="cd"><div class="sec">EARN POINTS</div><div class="sr"><span class="sl">Follow a bartender</span><span class="bdg dg">+2 pts</span></div><div class="sr"><span class="sl">Shift check-in</span><span class="bdg dg">+5 pts</span></div><div class="sr"><span class="sl">Try featured cocktail</span><span class="bdg dg">+2 pts</span></div><div class="sr"><span class="sl">Tip your tender</span><span class="bdg do">+3 pts</span></div></div>
-        <div class="cd"><div class="sec">YOUR RECENT ACTIVITY</div><div class="sr"><span class="sl">Checked in at City Bar</span><span class="bdg dg">+5</span></div><div class="sr"><span class="sl">Followed Emily W.</span><span class="bdg dg">+2</span></div><div class="sr"><span class="sl">Tried signature cocktail</span><span class="bdg dg">+2</span></div></div>
-      </div>
-    </div>
-
-    <div class="scr" id="p-aff">
-      <div class="hdr"><div style="font-size:18px;">🤝</div><div class="appname" style="color:#ff4081;">AFFILIATES</div></div>
-      <div class="sp">
-        <div class="cd">
-          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;"><div style="width:36px;height:36px;border-radius:7px;background:rgba(255,90,26,.12);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">💰</div><div style="flex:1;"><div style="font-size:13px;color:#ccc;font-weight:600;">FICA Tip Tax Refunds</div><div style="font-size:10px;color:#555;">For Bars &amp; Restaurants</div></div><span class="bdg do">FEATURED</span></div>
-          <div style="font-size:11px;color:#777;margin-bottom:9px;line-height:1.5;">Recover up to 3 years of overpaid FICA tip taxes. Most venues qualify — avg refund $50k+.</div>
-          <button class="btn bo">CLAIM YOUR REFUND →</button>
-        </div>
-        <div class="cd">
-          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;"><div style="width:36px;height:36px;border-radius:7px;background:rgba(64,196,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🛡️</div><div style="flex:1;"><div style="font-size:13px;color:#ccc;font-weight:600;">Bar &amp; Venue Insurance</div><div style="font-size:10px;color:#555;">Tailored for Nightlife</div></div></div>
-          <div style="font-size:11px;color:#777;margin-bottom:9px;line-height:1.5;">Comprehensive coverage for bars, lounges &amp; event venues.</div>
-          <button class="btn bg">LEARN MORE →</button>
-        </div>
-        <div class="cd">
-          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;"><div style="width:36px;height:36px;border-radius:7px;background:rgba(255,64,129,.12);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📱</div><div style="flex:1;"><div style="font-size:13px;color:#ccc;font-weight:600;">POS &amp; Tip Management</div><div style="font-size:10px;color:#555;">Seamless Staff Payouts</div></div></div>
-          <button class="btn bp">GET A DEMO →</button>
-        </div>
-        <div style="font-size:10px;color:#333;text-align:center;margin-top:4px;">Become a partner · advertise@mytenderapp.com</div>
-      </div>
-    </div>
-
-    <!-- ══════════ BARTENDER ══════════ -->
-    <div class="scr" id="b-dash">
-      <div class="hdr"><div style="font-size:18px;">🍹</div><div class="appname" style="color:#ff4081;">mytenderapp</div><div class="sub">BARTENDER DASHBOARD</div></div>
-      <div class="sp">
-        <div class="cd" style="display:flex;align-items:center;gap:10px;margin-bottom:9px;">
-          <div class="av" style="width:46px;height:46px;font-size:18px;background:rgba(255,64,129,.12);color:#ff4081;">EW</div>
-          <div style="flex:1;"><div style="font-size:14px;color:#ccc;font-weight:600;">Emily W.</div><div style="font-size:10px;color:#555;">City Bar · Chicago</div><div style="margin-top:5px;"><div class="pb"><div class="pf" style="width:72%;background:#ff4081;"></div></div><div style="display:flex;justify-content:space-between;margin-top:2px;"><span style="font-size:9px;color:#555;">Pour Score 720</span><span style="font-size:9px;color:#ff4081;">⭐ Top Shelf</span></div></div></div>
-        </div>
-        <div class="mg">
-          <div class="mc"><div class="mn" style="color:#ff4081;">342</div><div class="ml">FOLLOWERS</div></div>
-          <div class="mc"><div class="mn" style="color:#00e676;">18</div><div class="ml">CHECK-INS/WEEK</div></div>
-          <div class="mc"><div class="mn" style="color:#ff5a1a;">3</div><div class="ml">SHIFTS THIS WEEK</div></div>
-          <div class="mc"><div class="mn" style="color:#40c4ff;">720</div><div class="ml">POUR SCORE</div></div>
-        </div>
-        <div class="cd"><div class="sec">TONIGHT'S SHIFT</div><div class="sb"><div><div style="font-size:12px;color:#ccc;font-weight:600;">City Bar</div><div style="font-size:10px;color:#ff5a1a;">6:00 PM – 2:00 AM</div></div><span class="bdg do">TONIGHT</span></div><div class="g2"><button class="btn bo" style="flex:1;" onclick="bNav('b-shifts')">MANAGE SHIFTS</button><button class="btn bg" style="flex:1;">CLOCK IN</button></div></div>
-        <div class="cd"><div class="sec">RECENT FOLLOWERS</div><div class="ri"><div class="av" style="width:32px;height:32px;background:rgba(0,230,118,.1);color:#00e676;">MJ</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;">Matt J.</div><div style="font-size:10px;color:#444;">Followed you · 2h ago</div></div><span class="bdg dg">+1 pt</span></div><div class="ri"><div class="av" style="width:32px;height:32px;background:rgba(255,64,129,.1);color:#ff4081;">SR</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;">Sara R.</div><div style="font-size:10px;color:#444;">Followed you · 5h ago</div></div><span class="bdg dg">+1 pt</span></div></div>
-        <button class="btn bp" onclick="bNav('b-profile')">EDIT MY PROFILE</button>
-      </div>
-    </div>
-
-    <div class="scr" id="b-shifts">
-      <div class="scrt">MY SHIFTS</div>
-      <div class="tab-r"><div class="tab t-pk">Upcoming</div><div class="tab">Past</div></div>
-      <div class="sp">
-        <button class="btn bg" style="margin-bottom:9px;">+ POST NEW SHIFT</button>
-        <div class="cd"><div class="sec">THIS WEEK</div>
-          <div class="sb"><div><div style="font-size:12px;color:#ccc;font-weight:600;">City Bar</div><div style="font-size:10px;color:#ff5a1a;">Tonight · 6 PM–2 AM</div></div><div style="display:flex;gap:5px;"><button class="btn bo" style="padding:4px 8px;font-size:10px;width:auto;">EDIT</button><button class="btn bp" style="padding:4px 8px;font-size:10px;width:auto;">CANCEL</button></div></div>
-          <div class="sb" style="border-left-color:#00e676;"><div><div style="font-size:12px;color:#ccc;font-weight:600;">City Bar</div><div style="font-size:10px;color:#00e676;">Thu May 21 · 7PM–2AM</div></div><span class="bdg dg">UPCOMING</span></div>
-          <div class="sb" style="border-left-color:#40c4ff;"><div><div style="font-size:12px;color:#ccc;font-weight:600;">City Bar</div><div style="font-size:10px;color:#40c4ff;">Fri May 22 · 6PM–3AM</div></div><span class="bdg db">UPCOMING</span></div>
-        </div>
-        <div class="cd"><div class="sec">SHIFT ALERTS SENT</div><div class="sr"><span class="sl">Tonight's shift</span><span class="sv" style="color:#00e676;">342 notified</span></div><div class="sr"><span class="sl">Thu May 21</span><span class="sv" style="color:#00e676;">342 notified</span></div></div>
-      </div>
-    </div>
-
-    <div class="scr" id="b-followers">
-      <div class="scrt">MY FOLLOWERS</div>
-      <div class="sp">
-        <div class="mg"><div class="mc"><div class="mn" style="color:#ff4081;">342</div><div class="ml">TOTAL</div></div><div class="mc"><div class="mn" style="color:#00e676;">+12</div><div class="ml">THIS WEEK</div></div></div>
-        <div style="font-size:10px;color:#444;letter-spacing:1px;font-weight:600;margin-bottom:7px;">CHECKED IN TONIGHT</div>
-        <div class="cd" style="margin-bottom:9px;">
-          <div class="ri"><div class="av" style="width:32px;height:32px;background:rgba(255,90,26,.1);color:#ff5a1a;">MJ</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;">Matt Johnson</div><div style="font-size:10px;color:#444;">8:32 PM</div></div><span class="bdg do">HAPPY HOUR</span></div>
-          <div class="ri"><div class="av" style="width:32px;height:32px;background:rgba(0,230,118,.1);color:#00e676;">JW</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;">Jessica W.</div><div style="font-size:10px;color:#444;">9:15 PM</div></div><span class="bdg dp">TOP SHELF</span></div>
-          <div class="ri"><div class="av" style="width:32px;height:32px;background:rgba(64,196,255,.1);color:#40c4ff;">DS</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;">David S.</div><div style="font-size:10px;color:#444;">10:01 PM</div></div><span class="bdg db">REGULAR</span></div>
-        </div>
-        <div style="font-size:10px;color:#444;letter-spacing:1px;font-weight:600;margin-bottom:7px;">FOLLOWER GROWTH</div>
-        <div class="cd"><div class="bch"><div class="bc"><div class="bf" style="height:28px;background:rgba(255,64,129,.28);border-top:2px solid #ff4081;"></div><span class="bl">MON</span></div><div class="bc"><div class="bf" style="height:18px;background:rgba(255,64,129,.28);border-top:2px solid #ff4081;"></div><span class="bl">TUE</span></div><div class="bc"><div class="bf" style="height:36px;background:rgba(255,64,129,.28);border-top:2px solid #ff4081;"></div><span class="bl">WED</span></div><div class="bc"><div class="bf" style="height:50px;background:rgba(255,64,129,.28);border-top:2px solid #ff4081;"></div><span class="bl">THU</span></div><div class="bc"><div class="bf" style="height:46px;background:rgba(255,64,129,.28);border-top:2px solid #ff4081;"></div><span class="bl">FRI</span></div><div class="bc"><div class="bf" style="height:54px;background:rgba(255,64,129,.28);border-top:2px solid #ff4081;"></div><span class="bl">SAT</span></div><div class="bc"><div class="bf" style="height:32px;background:rgba(255,64,129,.28);border-top:2px solid #ff4081;"></div><span class="bl">SUN</span></div></div></div>
-      </div>
-    </div>
-
-    <div class="scr" id="b-profile">
-      <div class="scrt">MY PROFILE</div>
-      <div class="sp">
-        <div style="text-align:center;margin-bottom:12px;"><div style="width:58px;height:58px;border-radius:50%;background:rgba(255,64,129,.12);border:2px solid #ff4081;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 6px;">EW</div><button class="btn bp" style="width:auto;padding:4px 12px;font-size:10px;">CHANGE PHOTO</button></div>
-        <div class="cd" style="margin-bottom:9px;"><div class="sec">BIO</div><div style="font-size:11px;color:#777;line-height:1.5;background:#0d0d14;border:1px solid #1e1e2e;border-radius:7px;padding:8px;margin-bottom:7px;">Cocktail enthusiast &amp; City Bar's resident mixologist. Ask me about the secret menu 🍹</div><button class="btn bo" style="font-size:11px;padding:6px;">EDIT BIO</button></div>
-        <div class="cd" style="margin-bottom:9px;"><div class="sec">SPECIALTIES</div><div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="bdg do">Cocktails</span><span class="bdg dp">Craft Beer</span><span class="bdg db">Mixologist</span><span class="bdg dz" style="cursor:pointer;">+ Add</span></div></div>
-        <div class="cd" style="margin-bottom:9px;"><div class="sec">NOTIFICATIONS</div><div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;"><span style="font-size:11px;color:#666;">New follower alerts</span><div class="tgl on" onclick="this.classList.toggle('on')"></div></div><div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;"><span style="font-size:11px;color:#666;">Check-in notifications</span><div class="tgl on" onclick="this.classList.toggle('on')"></div></div><div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;"><span style="font-size:11px;color:#666;">Shift reminders</span><div class="tgl on" onclick="this.classList.toggle('on')"></div></div></div>
-        <button class="btn bg">SAVE CHANGES</button>
-      </div>
-    </div>
-
-    <!-- ══════════ VENUE MANAGER ══════════ -->
-    <div class="scr" id="v-dash">
-      <div class="hdr"><div style="font-size:18px;">🏪</div><div class="appname" style="color:#00e676;">mytenderapp</div><div class="sub">VENUE DASHBOARD</div></div>
-      <div class="sp">
-        <div class="cd" style="display:flex;align-items:center;gap:10px;margin-bottom:9px;"><div style="font-size:28px;">🍺</div><div style="flex:1;"><div style="font-size:14px;color:#ccc;font-weight:600;">City Bar</div><div style="font-size:10px;color:#555;">123 W Lake St · Chicago</div><span class="bdg dg" style="margin-top:4px;display:inline-block;font-size:9px;">VERIFIED VENUE</span></div></div>
-        <div class="mg">
-          <div class="mc"><div class="mn" style="color:#00e676;">1,240</div><div class="ml">FOLLOWERS</div></div>
-          <div class="mc"><div class="mn" style="color:#ff5a1a;">47</div><div class="ml">CHECK-INS TONIGHT</div></div>
-          <div class="mc"><div class="mn" style="color:#ff4081;">5</div><div class="ml">STAFF ON SHIFT</div></div>
-          <div class="mc"><div class="mn" style="color:#40c4ff;">4.2k</div><div class="ml">PROFILE VIEWS</div></div>
-        </div>
-        <div class="cd" style="margin-bottom:9px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span class="sec" style="margin:0;">PENDING APPROVALS</span><span class="bdg do">2 NEW</span></div><div style="background:#1a120a;border:1px solid #2a1a0a;border-radius:9px;padding:10px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;"><div class="av" style="width:32px;height:32px;background:rgba(255,90,26,.1);color:#ff5a1a;">TM</div><div><div style="font-size:11px;color:#ccc;font-weight:600;">Tyler M.</div><div style="font-size:10px;color:#555;">Requesting to link to City Bar</div></div></div><div class="g2"><button class="btn bg" style="flex:1;padding:5px;font-size:10px;">APPROVE</button><button class="btn bp" style="flex:1;padding:5px;font-size:10px;">DECLINE</button></div></div></div>
-        <div class="g2" style="margin-bottom:9px;"><button class="btn bg" style="flex:1;" onclick="vNav('v-specials')">POST SPECIAL</button><button class="btn bb" style="flex:1;" onclick="vNav('v-analytics')">ANALYTICS</button></div>
-        <button class="btn bo" onclick="vNav('v-staff')">MANAGE STAFF</button>
-      </div>
-    </div>
-
-    <div class="scr" id="v-staff">
-      <div class="scrt">STAFF MANAGEMENT</div>
-      <div class="tab-r"><div class="tab t-gn">Active Staff</div><div class="tab">Pending</div><div class="tab">Hiring</div></div>
-      <div class="sp">
-        <div class="cd" style="margin-bottom:9px;">
-          <div class="ri"><div class="av" style="width:34px;height:34px;background:rgba(255,90,26,.1);color:#ff5a1a;">EW</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;font-weight:600;">Emily W.</div><div style="font-size:10px;color:#555;">342 followers · Score 720</div></div><span class="bdg do">ON SHIFT</span></div>
-          <div class="ri"><div class="av" style="width:34px;height:34px;background:rgba(64,196,255,.1);color:#40c4ff;">JK</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;font-weight:600;">Jordan K.</div><div style="font-size:10px;color:#555;">198 followers · Score 430</div></div><span class="bdg db">TONIGHT</span></div>
-          <div class="ri"><div class="av" style="width:34px;height:34px;background:rgba(255,64,129,.1);color:#ff4081;">NP</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;font-weight:600;">Nikki P.</div><div style="font-size:10px;color:#555;">512 followers · Score 890</div></div><span class="bdg dz">OFF</span></div>
-        </div>
-        <div style="font-size:10px;color:#444;letter-spacing:1px;font-weight:600;margin-bottom:7px;">DRIVING MOST TRAFFIC</div>
-        <div class="cd"><div class="sr"><span style="font-size:11px;color:#ccc;">Nikki P.</span><div style="flex:1;margin:0 7px;"><div class="pb"><div class="pf" style="width:88%;background:#00e676;"></div></div></div><span style="font-size:10px;color:#00e676;">512</span></div><div class="sr"><span style="font-size:11px;color:#ccc;">Emily W.</span><div style="flex:1;margin:0 7px;"><div class="pb"><div class="pf" style="width:66%;background:#00e676;"></div></div></div><span style="font-size:10px;color:#00e676;">342</span></div><div class="sr"><span style="font-size:11px;color:#ccc;">Jordan K.</span><div style="flex:1;margin:0 7px;"><div class="pb"><div class="pf" style="width:38%;background:#00e676;"></div></div></div><span style="font-size:10px;color:#00e676;">198</span></div></div>
-      </div>
-    </div>
-
-    <div class="scr" id="v-specials">
-      <div class="scrt">SPECIALS &amp; EVENTS</div>
-      <div class="sp">
-        <button class="btn bg" style="margin-bottom:9px;">+ ADD SPECIAL / EVENT</button>
-        <div style="font-size:10px;color:#444;letter-spacing:1px;font-weight:600;margin-bottom:7px;">ACTIVE TONIGHT</div>
-        <div class="cd" style="margin-bottom:9px;"><div class="ri"><div style="font-size:16px;">🍹</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;font-weight:600;">House Cocktails $8</div><div style="font-size:10px;color:#555;">Until 9:00 PM</div></div><button class="btn bp" style="width:auto;padding:3px 8px;font-size:10px;">END</button></div><div class="ri"><div style="font-size:16px;">🍺</div><div style="flex:1;"><div style="font-size:11px;color:#ccc;font-weight:600;">2-for-1 Draft Beer</div><div style="font-size:10px;color:#555;">Fri only · All night</div></div><button class="btn bp" style="width:auto;padding:3px 8px;font-size:10px;">END</button></div></div>
-        <div style="font-size:10px;color:#444;letter-spacing:1px;font-weight:600;margin-bottom:7px;">POUR SCORE REWARDS</div>
-        <div class="cd"><div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;"><div><div style="font-size:11px;color:#ccc;">Free drink at Top Shelf</div><div style="font-size:10px;color:#555;">300+ pts patrons</div></div><div class="tgl on" onclick="this.classList.toggle('on')"></div></div><div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;"><div><div style="font-size:11px;color:#ccc;">VIP seating at Pour Master</div><div style="font-size:10px;color:#555;">1,000+ pts patrons</div></div><div class="tgl on" onclick="this.classList.toggle('on')"></div></div></div>
-      </div>
-    </div>
-
-    <div class="scr" id="v-analytics">
-      <div class="scrt">ANALYTICS</div>
-      <div class="sp">
-        <div class="mg">
-          <div class="mc"><div class="mn" style="color:#00e676;">1,240</div><div class="ml">FOLLOWERS</div></div>
-          <div class="mc"><div class="mn" style="color:#ff5a1a;">+84</div><div class="ml">NEW THIS WEEK</div></div>
-          <div class="mc"><div class="mn" style="color:#ff4081;">312</div><div class="ml">CHECK-INS/WEEK</div></div>
-          <div class="mc"><div class="mn" style="color:#40c4ff;">892</div><div class="ml">SHIFT VIEWS TODAY</div></div>
-        </div>
-        <div style="font-size:10px;color:#444;letter-spacing:1px;font-weight:600;margin-bottom:7px;">WEEKLY CHECK-INS</div>
-        <div class="cd" style="margin-bottom:9px;"><div class="bch"><div class="bc"><div class="bf" style="height:20px;background:rgba(0,230,118,.25);border-top:2px solid #00e676;"></div><span class="bl">MON</span></div><div class="bc"><div class="bf" style="height:14px;background:rgba(0,230,118,.25);border-top:2px solid #00e676;"></div><span class="bl">TUE</span></div><div class="bc"><div class="bf" style="height:28px;background:rgba(0,230,118,.25);border-top:2px solid #00e676;"></div><span class="bl">WED</span></div><div class="bc"><div class="bf" style="height:44px;background:rgba(0,230,118,.25);border-top:2px solid #00e676;"></div><span class="bl">THU</span></div><div class="bc"><div class="bf" style="height:54px;background:rgba(0,230,118,.25);border-top:2px solid #00e676;"></div><span class="bl">FRI</span></div><div class="bc"><div class="bf" style="height:50px;background:rgba(0,230,118,.25);border-top:2px solid #00e676;"></div><span class="bl">SAT</span></div><div class="bc"><div class="bf" style="height:24px;background:rgba(0,230,118,.25);border-top:2px solid #00e676;"></div><span class="bl">SUN</span></div></div></div>
-        <div style="font-size:10px;color:#444;letter-spacing:1px;font-weight:600;margin-bottom:7px;">TRAFFIC SOURCE</div>
-        <div class="cd"><div class="sr"><span class="sl">Via bartender followers</span><span class="sv" style="color:#00e676;">61%</span></div><div class="sr"><span class="sl">Via venue follow</span><span class="sv" style="color:#40c4ff;">24%</span></div><div class="sr"><span class="sl">Via Wingers invite</span><span class="sv" style="color:#ff4081;">15%</span></div></div>
-      </div>
-    </div>
-
-    <!-- ══════════ NAV BARS ══════════ -->
-    <div class="nb" id="nb-p">
-      <div class="ni on c-or" id="np-home" onclick="pNav('p-home')"><i class="ti ti-home"></i><span class="nl">HOME</span></div>
-      <div class="ni c-or" id="np-find" onclick="pNav('p-find')"><i class="ti ti-user-search"></i><span class="nl">FIND</span></div>
-      <div class="ni c-or" id="np-wing" onclick="pNav('p-wing')"><i class="ti ti-users"></i><span class="nl">WINGERS</span></div>
-      <div class="ni c-or" id="np-pour" onclick="pNav('p-pour')"><i class="ti ti-trophy"></i><span class="nl">SCORE</span></div>
-      <div class="ni c-or" id="np-aff" onclick="pNav('p-aff')"><i class="ti ti-building-store"></i><span class="nl">PARTNERS</span></div>
-    </div>
-    <div class="nb" id="nb-b" style="display:none;">
-      <div class="ni on c-pk" id="nb-b-d" onclick="bNav('b-dash')"><i class="ti ti-layout-dashboard"></i><span class="nl">DASH</span></div>
-      <div class="ni c-pk" id="nb-b-s" onclick="bNav('b-shifts')"><i class="ti ti-calendar"></i><span class="nl">SHIFTS</span></div>
-      <div class="ni c-pk" id="nb-b-f" onclick="bNav('b-followers')"><i class="ti ti-users"></i><span class="nl">FOLLOWERS</span></div>
-      <div class="ni c-pk" id="nb-b-p" onclick="bNav('b-profile')"><i class="ti ti-user-circle"></i><span class="nl">PROFILE</span></div>
-    </div>
-    <div class="nb" id="nb-v" style="display:none;">
-      <div class="ni on c-gn" id="nb-v-d" onclick="vNav('v-dash')"><i class="ti ti-layout-dashboard"></i><span class="nl">DASH</span></div>
-      <div class="ni c-gn" id="nb-v-s" onclick="vNav('v-staff')"><i class="ti ti-users"></i><span class="nl">STAFF</span></div>
-      <div class="ni c-gn" id="nb-v-sp" onclick="vNav('v-specials')"><i class="ti ti-sparkles"></i><span class="nl">SPECIALS</span></div>
-      <div class="ni c-gn" id="nb-v-a" onclick="vNav('v-analytics')"><i class="ti ti-chart-bar"></i><span class="nl">ANALYTICS</span></div>
-    </div>
-
-  </div>
-  <div style="margin-top:8px;font-size:10px;color:#2a2a3a;letter-spacing:1px;">TAP SCREENS · TOGGLE VIEWS</div>
 </div>
 
+<!-- HOME -->
+<div class="screen" id="screen-home">
+  <div class="sbar"><span id="c1">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div style="padding:10px 16px 24px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div>
+        <div class="appname" style="font-size:18px;letter-spacing:2px;">mytenderapp</div>
+        <div style="font-size:11px;color:var(--mu);" id="home-greeting">Welcome back</div>
+      </div>
+      <div id="home-avatar" onclick="go('myprofile')" style="width:42px;height:42px;border-radius:50%;background:rgba(255,90,26,.12);border:1.5px solid rgba(255,90,26,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--or);overflow:hidden;flex-shrink:0;"></div>
+    </div>
+    <div id="home-shift-card" style="display:none;background:var(--cd);border:1px solid var(--eg);border-radius:10px;padding:12px 14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div><div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px;">On Shift Tonight</div><div style="font-size:10px;color:var(--mu);" id="home-shift-lbl">Let patrons know you're working</div></div>
+        <div class="shift-tog" id="home-stog" onclick="toggleShift();syncShiftUI();"><div class="shift-knob" id="home-sknob"></div></div>
+      </div>
+    </div>
+    <div class="srow" id="home-stats" style="display:none;">
+      <div class="scrd"><div class="snum" style="color:var(--or);" id="home-likes">0</div><div class="slbl">Likes</div></div>
+      <div class="scrd"><div class="snum" style="color:var(--pk);" id="home-reqs">0</div><div class="slbl">Requests</div></div>
+      <div class="scrd"><div class="snum" style="color:var(--gn);" id="home-appd">0</div><div class="slbl">Approved</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+      <div class="home-tile" onclick="goFollow('t');" style="border-color:var(--gn);">
+        <i class="ti ti-cards" style="font-size:26px;color:var(--gn);margin-bottom:6px;display:block;"></i>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--gn);">Find Your Tender</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">Swipe to discover</div>
+      </div>
+      <div class="home-tile" onclick="go('affiliates');" style="border-color:var(--or);">
+        <i class="ti ti-star" style="font-size:26px;color:var(--or);margin-bottom:6px;display:block;"></i>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--or);">Affiliate Offers</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">Partner programs</div>
+      </div>
+      <div class="home-tile" onclick="" style="border-color:var(--pk);opacity:.55;cursor:default;">
+        <i class="ti ti-users" style="font-size:26px;color:var(--pk);margin-bottom:6px;display:block;"></i>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--pk);">Wingers</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">Coming soon</div>
+      </div>
+      <div class="home-tile" onclick="" style="border-color:var(--bl);opacity:.55;cursor:default;">
+        <i class="ti ti-ticket" style="font-size:26px;color:var(--bl);margin-bottom:6px;display:block;"></i>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--bl);">Specials & Events</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">Coming soon</div>
+      </div>
+    </div>
+    <div class="home-tile" onclick="go('following');" style="border-color:var(--pu);display:flex;align-items:center;gap:12px;padding:14px 18px;text-align:left;">
+      <i class="ti ti-heart" style="font-size:24px;color:var(--pu);flex-shrink:0;"></i>
+      <div><div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--pu);">My Following</div><div style="font-size:10px;color:var(--mu);margin-top:1px;">Your tenders, places & friends</div></div>
+      <i class="ti ti-chevron-right" style="margin-left:auto;color:var(--dm);font-size:16px;"></i>
+    </div>
+    <div style="margin-top:12px;">
+      <div class="sec-label">Live Tonight</div>
+      <div id="home-live"><div style="font-size:12px;color:var(--dm);font-style:italic;">Loading…</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- AFFILIATES -->
+<div class="screen" id="screen-affiliates">
+  <div class="sbar"><span id="c9">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="shdr"><div class="stitle" style="color:var(--or);">AFFILIATE OFFERS</div></div>
+  <div style="padding:0 16px 24px;">
+    <div style="font-size:13px;color:var(--mu);margin-bottom:20px;line-height:1.6;">Exclusive programs for MyTenderApp partners and venues. Tap any offer to learn more.</div>
+    <div class="affil-card" onclick="window.open('https://whitt2025.github.io/inspire-fica/','_blank');">
+      <div class="affil-icon" style="background:rgba(0,230,118,.1);">💰</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--gn);margin-bottom:4px;">FICA Recovery Program</div>
+      <div style="font-size:13px;color:var(--mu);line-height:1.6;margin-bottom:12px;">Restaurants and bars may be leaving significant FICA tax credits on the table. Find out what you're owed.</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gn);font-weight:500;">Learn More <i class="ti ti-external-link" style="font-size:14px;"></i></div>
+    </div>
+    <div class="affil-card" onclick="window.open('https://hudsonhouse.io/','_blank');">
+      <div class="affil-icon" style="background:rgba(64,196,255,.1);">📱</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--bl);margin-bottom:4px;">Mobile Carrier Off-Load</div>
+      <div style="font-size:13px;color:var(--mu);line-height:1.6;margin-bottom:12px;">Your venue can earn a share of mobile carrier fees. Put your WiFi to work and generate passive revenue.</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--bl);font-weight:500;">Learn More <i class="ti ti-external-link" style="font-size:14px;"></i></div>
+    </div>
+    <div style="background:var(--cd);border:1px solid var(--eg);border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:11px;color:var(--mu);line-height:1.6;">More affiliate programs coming soon. Interested in partnering with MyTenderApp? <span style="color:var(--or);cursor:pointer;" onclick="window.open('mailto:leap31@comcast.net','_blank');">Contact us →</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MY FOLLOWING -->
+<div class="screen" id="screen-following">
+  <div class="sbar"><span id="c10">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="shdr"><div class="stitle" style="color:var(--pu);">MY FOLLOWING</div></div>
+  <div style="padding:0 16px 24px;">
+    <div class="follow-section">
+      <div class="sec-label" style="color:var(--or);">My Tenders</div>
+      <div id="fol-tenders"><div style="font-size:12px;color:var(--dm);font-style:italic;">No approved tenders yet.</div></div>
+    </div>
+    <div class="follow-section">
+      <div class="sec-label" style="color:var(--pk);">My Places</div>
+      <div id="fol-places"><div style="font-size:12px;color:var(--dm);font-style:italic;">No approved places yet.</div></div>
+    </div>
+    <div class="follow-section" style="opacity:.5;">
+      <div class="sec-label" style="color:var(--bl);">My Wingers</div>
+      <div style="font-size:12px;color:var(--dm);font-style:italic;">Wingers groups — coming soon.</div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- TENDER CREATE -->
+<div class="screen" id="screen-tender-create">
+  <div class="sbar"><span id="c2">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="shdr"><div class="stitle">CREATE TENDER PROFILE</div><span style="font-size:10px;color:var(--mu);">Founding Tender</span></div>
+  <div class="fwrap">
+    <div id="tform-view">
+      <div class="fsub">Your photo, name, establishment & vibe will be public. Everything else stays private.</div>
+      <form id="tform" novalidate>
+        <div class="fld"><div class="flbl">Profile Photo</div>
+          <div class="pzone" id="tpzone" onclick="document.getElementById('tphoto').click()">
+            <img id="tpimg" class="pzimg" alt=""><div class="pzov"><i class="ti ti-camera" style="font-size:18px;color:var(--or);"></i><span style="font-size:11px;color:var(--or);">Change</span></div>
+            <i class="ti ti-camera-plus" style="font-size:22px;color:var(--or);opacity:.5;"></i><span style="font-size:11px;color:var(--mu);">Tap to upload</span>
+          </div>
+          <input type="file" id="tphoto" accept="image/*" onchange="uploadPhoto(event,'t')">
+          <div class="uprog" id="tuprog"><div class="spin" style="border-top-color:var(--or);border-color:rgba(255,90,26,.15);"></div><span>Uploading…</span></div>
+        </div>
+        <div class="fld"><div class="flbl">Full Name</div><input id="tn" type="text" autocomplete="name" placeholder="Your name behind the bar"><div class="errmsg" id="etn">Please enter your name.</div></div>
+        <div class="fld"><div class="flbl">Phone <span class="ptag">private</span></div><input id="tph" type="tel" autocomplete="tel" placeholder="+1 (312) 000-0000"><div class="errmsg" id="etph">Valid phone required.</div></div>
+        <div class="fld"><div class="flbl">Email <span class="ptag">private</span></div><input id="tem" type="email" autocomplete="email" placeholder="you@example.com"><div class="errmsg" id="etem">Valid email required.</div></div>
+        <div class="fld"><div class="flbl">Establishment</div><input id="tes" type="text" autocomplete="organization" placeholder="Where are you currently pouring?"><div class="errmsg" id="etes">Please enter your establishment.</div></div>
+        <div class="fld"><div class="flbl">Your Vibe</div><textarea id="tvi" rows="3" maxlength="120" placeholder="Who are you behind the bar?" oninput="document.getElementById('vct').textContent=this.value.length"></textarea><div class="chcnt"><span id="vct">0</span>/120</div><div class="errmsg" id="etvi">Give us your vibe.</div></div>
+        <button type="submit" class="bor" id="tsub"><div class="binn" id="tbinn"><i class="ti ti-rocket"></i><span>Go Live — Create My Profile</span></div></button>
+        <p style="text-align:center;font-size:10px;color:var(--dm);margin-top:8px;">Your contact info is never shared.</p>
+      </form>
+    </div>
+    <div class="succ" id="tsucc">
+      <div class="sring"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path class="chk" d="M7 14.5l5.5 5.5 8.5-9.5" stroke="#00e676" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="succ-title">YOU'RE <span>LIVE</span>, <span id="tsname">TENDER</span>.</div>
+      <p class="succ-body">Your profile is out there. Patrons can now discover you and send follow requests.</p>
+      <button class="bor" onclick="go('home');loadHome();" style="max-width:240px;margin:0 auto;"><div class="binn"><i class="ti ti-home"></i><span>Go to Home</span></div></button>
+    </div>
+  </div>
+</div>
+
+<!-- PATRON CREATE -->
+<div class="screen" id="screen-patron-create">
+  <div class="sbar"><span id="c3">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="shdr"><div class="stitle" style="color:var(--bl);">CREATE YOUR PROFILE</div></div>
+  <div class="fwrap">
+    <div id="pform-view">
+      <div class="fsub">Create your profile to start discovering and following your favorite bartenders and venues.</div>
+      <form id="pform" novalidate>
+        <div class="fld"><div class="flbl" style="color:var(--bl);">Profile Photo</div>
+          <div class="pzone" id="ppzone" onclick="document.getElementById('pphoto').click()">
+            <img id="ppimg" class="pzimg" alt=""><div class="pzov"><i class="ti ti-camera" style="font-size:18px;color:var(--bl);"></i><span style="font-size:11px;color:var(--bl);">Change</span></div>
+            <i class="ti ti-camera-plus" style="font-size:22px;color:var(--bl);opacity:.5;"></i><span style="font-size:11px;color:var(--mu);">Tap to upload</span>
+          </div>
+          <input type="file" id="pphoto" accept="image/*" onchange="uploadPhoto(event,'p')">
+          <div class="uprog" id="puprog"><div class="spin" style="border-top-color:var(--bl);border-color:rgba(64,196,255,.15);"></div><span>Uploading…</span></div>
+        </div>
+        <div class="fld"><div class="flbl" style="color:var(--bl);">First Name</div><input id="pfn" type="text" autocomplete="given-name" placeholder="First name"><div class="errmsg" id="epfn">Required.</div></div>
+        <div class="fld"><div class="flbl" style="color:var(--bl);">Last Name</div><input id="pln" type="text" autocomplete="family-name" placeholder="Last name"><div class="errmsg" id="epln">Required.</div></div>
+        <div class="fld"><div class="flbl" style="color:var(--bl);">Email</div><input id="pem" type="email" autocomplete="email" placeholder="you@example.com"><div class="errmsg" id="epem">Valid email required.</div></div>
+        <div class="fld"><div class="flbl" style="color:var(--bl);">Phone</div><input id="pph" type="tel" autocomplete="tel" placeholder="+1 (312) 000-0000"><div class="errmsg" id="epph">Valid phone required.</div></div>
+        <button type="submit" class="bbl" id="psub"><div class="binn" id="pbinn"><i class="ti ti-arrow-right"></i><span>Enter The App</span></div></button>
+      </form>
+    </div>
+    <div class="succ" id="psucc">
+      <div class="sring" style="border-color:rgba(64,196,255,.5);"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path class="chk" d="M7 14.5l5.5 5.5 8.5-9.5" stroke="#40c4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="succ-title" style="color:var(--tx);">WELCOME, <span style="color:var(--bl);" id="psname">FRIEND</span>.</div>
+      <p class="succ-body">You're in. Swipe right on Tenders or Places to send follow requests.</p>
+      <button class="bbl" onclick="go('home');loadHome();" style="max-width:240px;margin:0 auto;"><div class="binn"><i class="ti ti-home"></i><span>Go to Home</span></div></button>
+    </div>
+  </div>
+</div>
+
+<!-- PLACE CREATE -->
+<div class="screen" id="screen-place-create">
+  <div class="sbar"><span id="c11">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="shdr"><div class="stitle" style="color:var(--pk);">CREATE VENUE PROFILE</div></div>
+  <div class="fwrap">
+    <div id="plform-view">
+      <div class="fsub">Set up your venue profile so patrons can discover you, follow your bartenders, and see what's happening tonight.</div>
+      <form id="plform" novalidate>
+        <div class="fld"><div class="flbl" style="color:var(--pk);">Venue Photo / Banner</div>
+          <div class="pzone" id="plpzone" onclick="document.getElementById('plphoto').click()">
+            <img id="plpimg" class="pzimg" alt=""><div class="pzov"><i class="ti ti-camera" style="font-size:18px;color:var(--pk);"></i><span style="font-size:11px;color:var(--pk);">Change</span></div>
+            <i class="ti ti-camera-plus" style="font-size:22px;color:var(--pk);opacity:.5;"></i><span style="font-size:11px;color:var(--mu);">Tap to upload banner photo</span>
+          </div>
+          <input type="file" id="plphoto" accept="image/*" onchange="uploadPhoto(event,'pl')">
+          <div class="uprog" id="pluprog"><div class="spin" style="border-top-color:var(--pk);border-color:rgba(255,64,129,.15);"></div><span>Uploading…</span></div>
+        </div>
+        <div class="fld"><div class="flbl" style="color:var(--pk);">Venue Name</div><input id="pln2" type="text" placeholder="Your bar or restaurant name"><div class="errmsg" id="epln2">Required.</div></div>
+        <div class="fld"><div class="flbl" style="color:var(--pk);">Address</div><input id="pladdr" type="text" autocomplete="street-address" placeholder="Full street address"><div class="errmsg" id="epladdr">Required.</div></div>
+        <div class="fld"><div class="flbl" style="color:var(--pk);">Phone</div><input id="plphone" type="tel" autocomplete="tel" placeholder="+1 (312) 000-0000"><div class="errmsg" id="eplphone">Required.</div></div>
+        <div class="fld"><div class="flbl" style="color:var(--pk);">Hours</div><input id="plhours" type="text" placeholder="e.g. Mon-Thu 11am-1am · Fri-Sat 11am-2am"><div class="errmsg" id="eplhours">Required.</div></div>
+        <div class="fld"><div class="flbl" style="color:var(--pk);">Contact Email <span class="ptag">private</span></div><input id="plem" type="email" autocomplete="email" placeholder="owner@yourbar.com"><div class="errmsg" id="eplem">Valid email required.</div></div>
+        <button type="submit" class="bpu" id="plsub"><div class="binn" id="plbinn"><i class="ti ti-building-store"></i><span>Create Venue Profile</span></div></button>
+      </form>
+    </div>
+    <div class="succ" id="plsucc">
+      <div class="sring" style="border-color:rgba(255,64,129,.5);"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path class="chk" d="M7 14.5l5.5 5.5 8.5-9.5" stroke="#ff4081" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="succ-title" style="color:var(--tx);">YOU'RE LIVE, <span style="color:var(--pk);" id="plsname">VENUE</span>.</div>
+      <p class="succ-body">Your venue profile is live. Patrons can now find you, follow you, and see who's on shift.</p>
+      <button class="bpu" onclick="go('home');loadHome();" style="max-width:240px;margin:0 auto;"><div class="binn"><i class="ti ti-home"></i><span>Go to Home</span></div></button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- FOLLOW (SWIPE) -->
+<div class="screen" id="screen-follow">
+  <div class="sbar"><span id="c4">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="dhdr">
+    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:4px;">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="none"><path d="M9 5l2.5 12L16 22l4.5-5L23 5H9z" stroke="#ff5a1a" stroke-width="1.3" stroke-linejoin="round" fill="none"/><path d="M13 22v4M19 22v4M11 26h10" stroke="#ff5a1a" stroke-width="1.3" stroke-linecap="round"/><path d="M9 5h14" stroke="#ff5a1a" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <span class="appname" style="font-size:18px;letter-spacing:2px;">follow</span>
+    </div>
+    <div class="chip"><span class="dot"></span><span id="tcnt">-</span> discoverable</div>
+    <div class="disc-tabs">
+      <button class="disc-tab" id="ftab-t" onclick="setFollowTab('t')" style="border-color:var(--or);background:var(--or);color:#fff;">Tenders</button>
+      <button class="disc-tab" id="ftab-pl" onclick="setFollowTab('pl')" style="border-color:var(--eg);background:transparent;color:var(--mu);">Places</button>
+    </div>
+  </div>
+  <div class="dctr" id="dctr"></div>
+  <div class="dwrap" id="dwrap"><div class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+  <div class="dempty" id="dempty">
+    <div style="font-size:36px;margin-bottom:10px;opacity:.4;">🍸</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:#ccc;margin-bottom:5px;">YOU'VE SEEN EVERYONE</div>
+    <div style="font-size:12px;color:var(--mu);margin-bottom:16px;">Check back — new profiles join every day.</div>
+    <button class="bor" onclick="resetDeck()" style="max-width:180px;margin:0 auto;display:block;font-size:13px;"><div class="binn"><span>See Them Again</span></div></button>
+  </div>
+  <div class="sact" id="sact">
+    <button class="abtn an" onclick="swipe('left')"><i class="ti ti-x"></i></button>
+    <button class="abtn al" onclick="swipe('right')"><i class="ti ti-heart"></i></button>
+  </div>
+  <div class="shint" id="shint">← Pass &nbsp;|&nbsp; Follow Request →</div>
+</div>
+
+<!-- FIND (BROWSE) -->
+<div class="screen" id="screen-find">
+  <div class="sbar"><span id="c5">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="shdr"><div class="stitle">FIND</div></div>
+  <div style="padding:0 16px 24px;">
+    <div style="display:flex;border-bottom:1px solid var(--eg);margin-bottom:12px;">
+      <button class="atab on" id="ftd-t" onclick="findTab('t')">Tenders</button>
+      <button class="atab" id="ftd-p" onclick="findTab('p')">Patrons</button>
+      <button class="atab" id="ftd-pl" onclick="findTab('pl')">Places</button>
+    </div>
+    <div id="fv-t"><div id="fl-t" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+    <div id="fv-p" style="display:none;"><div id="fl-p" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+    <div id="fv-pl" style="display:none;"><div id="fl-pl" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+  </div>
+</div>
+
+<!-- MY PROFILE -->
+<div class="screen" id="screen-myprofile">
+  <div class="sbar"><span id="c6">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="shdr"><div class="stitle">MY PROFILE</div></div>
+  <div style="padding:0 16px 24px;">
+    <div id="noprof" style="text-align:center;padding:48px 24px;">
+      <div style="font-size:38px;margin-bottom:12px;opacity:.3;">🍸</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:#ccc;margin-bottom:5px;">NO PROFILE YET</div>
+      <div style="font-size:12px;color:var(--mu);margin-bottom:18px;">Go back and create your profile.</div>
+      <button class="bor" onclick="go('landing')"><div class="binn"><span>Get Started</span></div></button>
+    </div>
+    <div id="myprofcont" style="display:none;">
+      <div class="pcard">
+        <img id="myphoto" class="pphoto" style="display:none;" alt="">
+        <div id="myph" class="pph"></div>
+        <div class="pinfo">
+          <div class="pnm" id="mynm">—</div>
+          <div class="pbr" id="mybr">—</div>
+          <div class="pvb" id="myvb" style="display:none;"></div>
+        </div>
+      </div>
+      <div class="srow">
+        <div class="scrd"><div class="snum" style="color:var(--or);" id="mylk">0</div><div class="slbl">Likes</div></div>
+        <div class="scrd"><div class="snum" style="color:var(--gn);">✓</div><div class="slbl">Live</div></div>
+        <div class="scrd"><div class="snum" style="color:var(--pk);" id="myrq">0</div><div class="slbl">Requests</div></div>
+      </div>
+      <div id="shift-card" style="display:none;background:var(--cd);border:1px solid var(--eg);border-radius:10px;padding:12px 14px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div><div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px;">On Shift Tonight</div><div style="font-size:10px;color:var(--mu);" id="shift-lbl">Let patrons know you're working</div></div>
+          <div class="shift-tog" id="prof-stog" onclick="toggleShift();syncShiftUI();"><div class="shift-knob" id="prof-sknob"></div></div>
+        </div>
+      </div>
+      <div class="icard">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--mu);margin-bottom:6px;">Private Info</div>
+        <div class="irow"><span class="ilbl">Phone</span><span class="ival" id="myph2">—</span></div>
+        <div class="irow"><span class="ilbl">Email</span><span class="ival" id="myem">—</span></div>
+      </div>
+      <div id="dashlnk" style="display:none;">
+        <button class="bor" onclick="go('dashboard')"><div class="binn"><i class="ti ti-shield-lock"></i><span>My Dashboard</span></div></button>
+      </div>
+      <button class="bout" onclick="clearProfile()" style="margin-top:6px;">SWITCH / RESET PROFILE</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD (Tender + Place PIN) -->
+<div class="screen" id="screen-dashboard">
+  <div class="sbar"><span id="c7">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="shdr"><div class="stitle" style="color:var(--pk);">MY DASHBOARD</div></div>
+  <div id="dash-pin-view" style="padding:0 16px 24px;">
+    <div class="pinwrap">
+      <div class="pinico">🔐</div>
+      <div class="pintitle">ENTER YOUR PIN</div>
+      <div class="pinsub">Enter your email and PIN to manage your follow requests.</div>
+      <div class="fld" style="margin-bottom:10px;text-align:left;"><div class="flbl">Your Email</div><input id="dpin-em" type="email" placeholder="your@email.com"></div>
+      <div class="fld" style="margin-bottom:10px;"><div class="flbl">PIN</div><input class="pininp" id="dpin-in" type="tel" placeholder="••••" oninput="if(this.value.length>4)this.value=this.value.slice(0,4)"><div class="pinerr" id="dpin-err">Incorrect email or PIN.</div></div>
+      <button class="bor" onclick="checkDashPin()"><div class="binn"><i class="ti ti-lock-open"></i><span>Access Dashboard</span></div></button>
+    </div>
+  </div>
+  <div id="dash-content" style="display:none;padding:0 16px 24px;">
+    <div style="margin-bottom:12px;"><div style="font-size:11px;color:var(--mu);margin-bottom:2px;">Welcome back,</div><div style="font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;" id="dash-nm">—</div></div>
+    <div class="srow">
+      <div class="scrd"><div class="snum" style="color:var(--or);" id="dash-lk">0</div><div class="slbl">Likes</div></div>
+      <div class="scrd"><div class="snum" style="color:var(--pk);" id="dash-pn">0</div><div class="slbl">Pending</div></div>
+      <div class="scrd"><div class="snum" style="color:var(--gn);" id="dash-ap">0</div><div class="slbl">Approved</div></div>
+    </div>
+    <div class="divr"><div class="dl"></div><div class="dd"></div><div class="dl"></div></div>
+    <div class="sec-label">PENDING REQUESTS</div>
+    <div id="dash-reqs"><div class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+    <button class="bout" onclick="lockDash()" style="margin-top:12px;">LOCK DASHBOARD</button>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="screen" id="screen-admin">
+  <div class="sbar"><span id="c8">9:41</span><span style="display:flex;gap:4px;"><i class="ti ti-wifi" style="font-size:11px;"></i><i class="ti ti-battery-2" style="font-size:11px;"></i></span></div>
+  <div class="shdr"><div class="stitle" style="color:var(--or);">ADMIN</div></div>
+  <div id="apin-view" style="padding:0 16px 24px;">
+    <div class="pinwrap">
+      <div class="pinico">🔑</div>
+      <div class="pintitle">ADMIN ACCESS</div>
+      <div class="pinsub">Partners only.</div>
+      <div class="fld" style="margin-bottom:10px;text-align:left;"><div class="flbl">Admin Email</div><input id="apin-em" type="email" placeholder="your@email.com"></div>
+      <div class="fld" style="margin-bottom:10px;"><div class="flbl">Admin PIN</div><input class="pininp" id="apin-in" type="tel" placeholder="••••" oninput="if(this.value.length>4)this.value=this.value.slice(0,4)"><div class="pinerr" id="apin-err">Incorrect email or PIN.</div></div>
+      <button class="bor" onclick="checkAdminPin()"><div class="binn"><i class="ti ti-shield-check"></i><span>Access Admin</span></div></button>
+    </div>
+  </div>
+  <div id="adash-view" style="display:none;padding:0 16px 24px;">
+    <div class="srow">
+      <div class="scrd"><div class="snum" style="color:var(--or);" id="a-tn">—</div><div class="slbl">Tenders</div></div>
+      <div class="scrd"><div class="snum" style="color:var(--bl);" id="a-pn">—</div><div class="slbl">Patrons</div></div>
+      <div class="scrd"><div class="snum" style="color:var(--pk);" id="a-pl">—</div><div class="slbl">Places</div></div>
+      <div class="scrd"><div class="snum" style="color:var(--gn);" id="a-rn">—</div><div class="slbl">Requests</div></div>
+    </div>
+    <div style="display:flex;border-bottom:1px solid var(--eg);margin-bottom:10px;">
+      <button class="atab on" id="at-t" onclick="aTab('t')">Tenders</button>
+      <button class="atab" id="at-p" onclick="aTab('p')">Patrons</button>
+      <button class="atab" id="at-pl" onclick="aTab('pl')">Places</button>
+      <button class="atab" id="at-r" onclick="aTab('r')">Requests</button>
+    </div>
+    <div id="av-t"><div id="al-t" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+    <div id="av-p" style="display:none;"><div id="al-p" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+    <div id="av-pl" style="display:none;"><div id="al-pl" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+    <div id="av-r" style="display:none;"><div id="al-r" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+    <button class="bout" onclick="lockAdmin()" style="margin-top:12px;">LOCK ADMIN</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav" id="bnav" style="display:none;">
+  <button class="ni active" id="nav-home" onclick="go('home');loadHome();"><i class="ti ti-home"></i><span class="nl">Home</span></button>
+  <button class="ni gn" id="nav-follow" onclick="go('follow');"><i class="ti ti-cards" style="color:var(--gn);"></i><span class="nl" style="color:var(--gn);">Follow</span></button>
+  <button class="ni bl" id="nav-find" onclick="go('find');loadFind();"><i class="ti ti-search" style="color:var(--bl);"></i><span class="nl" style="color:var(--bl);">Find</span></button>
+  <button class="ni pk" id="nav-myprofile" onclick="go('myprofile')"><i class="ti ti-user-circle"></i><span class="nl">Me</span></button>
+  <button class="ni" id="nav-dashboard" style="display:none;" onclick="go('dashboard')"><i class="ti ti-shield-lock" style="color:var(--pk);"></i><span class="nl" style="color:var(--pk);">Dashboard</span></button>
+  <button class="ni" id="nav-admin" onclick="go('admin')"><i class="ti ti-settings" style="color:var(--or);"></i><span class="nl" style="color:var(--or);">Admin</span></button>
+</nav>
+
+<!-- PROFILE MODAL -->
+<div class="modal-bg" id="modal-bg" style="display:none;" onclick="if(event.target===this)closeModal();">
+  <div class="modal" id="modal" style="position:relative;">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-photo-wrap"></div>
+    <div class="modal-info">
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-bar" id="modal-bar"></div>
+      <div class="modal-vibe" id="modal-vibe"></div>
+      <div id="modal-action"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
 <script>
-var aP=['p-home','p-find','p-profile','p-wing','p-pour','p-aff'];
-var aB=['b-dash','b-shifts','b-followers','b-profile'];
-var aV=['v-dash','v-staff','v-specials','v-analytics'];
-var all=aP.concat(aB,aV);
-var pM={'p-home':'np-home','p-find':'np-find','p-profile':'np-find','p-wing':'np-wing','p-pour':'np-pour','p-aff':'np-aff'};
-var bM={'b-dash':'nb-b-d','b-shifts':'nb-b-s','b-followers':'nb-b-f','b-profile':'nb-b-p'};
-var vM={'v-dash':'nb-v-d','v-staff':'nb-v-s','v-specials':'nb-v-sp','v-analytics':'nb-v-a'};
-function cls(id){var e=document.getElementById(id);if(e)e.classList.remove('on');}
-function add(id){var e=document.getElementById(id);if(e)e.classList.add('on');}
-function pNav(id){all.forEach(cls);add(id);document.querySelectorAll('#nb-p .ni').forEach(function(n){n.classList.remove('on');});if(pM[id])add(pM[id]);}
-function bNav(id){all.forEach(cls);add(id);document.querySelectorAll('#nb-b .ni').forEach(function(n){n.classList.remove('on');});if(bM[id])add(bM[id]);}
-function vNav(id){all.forEach(cls);add(id);document.querySelectorAll('#nb-v .ni').forEach(function(n){n.classList.remove('on');});if(vM[id])add(vM[id]);}
-function setMode(m){
-  document.getElementById('nb-p').style.display=m==='patron'?'flex':'none';
-  document.getElementById('nb-b').style.display=m==='bartender'?'flex':'none';
-  document.getElementById('nb-v').style.display=m==='venue'?'flex':'none';
-  document.getElementById('tg-p').className='tog tog-p'+(m==='patron'?' on':'');
-  document.getElementById('tg-b').className='tog tog-b'+(m==='bartender'?' on':'');
-  document.getElementById('tg-v').className='tog tog-v'+(m==='venue'?' on':'');
-  all.forEach(cls);
-  if(m==='patron')pNav('p-home');
-  else if(m==='bartender')bNav('b-dash');
-  else vNav('v-dash');
+// ── CONFIG ────────────────────────────────────────────────────────────
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzA_SCRYd4c97zbXaIA0yP5sDiZi85YNBptIjNryRKGksMtSEAS_Gf7PGupjzmxl2iP/exec';
+var CL_URL     = 'https://api.cloudinary.com/v1_1/djgf8nlyu/image/upload';
+var CL_PRESET  = 'wwco9alf';
+var DASH_PIN   = '2026';
+var A_PIN      = '6969';
+var A_EMAILS   = ['leap31@comcast.net','customstripe55@gmail.com','sjwroblewski@gmail.com'];
+var LS_KEY     = 'mta_profile_v2';
+
+// ── DEMO TENDERS ─────────────────────────────────────────────────────
+var DEMO_TENDERS = [
+  {name:'Marco R.',   est:'The Velvet Lounge',      vibe:"I pour with intention. Every drink tells a story.",              photo:'https://randomuser.me/api/portraits/men/32.jpg',   init:'MR', likes:47,  type:'tender'},
+  {name:'Nikki P.',   est:'City Bar · Chicago',     vibe:"Off-menu cocktails are my love language.",                       photo:'https://randomuser.me/api/portraits/women/44.jpg', init:'NP', likes:83,  type:'tender'},
+  {name:'Jordan K.',  est:"Moe Joe's · Plainfield", vibe:"Craft beer nerd by day, whiskey whisperer by night.",            photo:'https://randomuser.me/api/portraits/men/67.jpg',   init:'JK', likes:31,  type:'tender'},
+  {name:'Emily W.',   est:'City Bar · Chicago',     vibe:"Six years in and still obsessed with the perfect martini.",      photo:'https://randomuser.me/api/portraits/women/21.jpg', init:'EW', likes:112, type:'tender'},
+  {name:'Carlos M.',  est:'The Tipsy Turtle',       vibe:'Mezcal missionary. Tequila translator.',                        photo:'https://randomuser.me/api/portraits/men/55.jpg',   init:'CM', likes:58,  type:'tender'}
+];
+
+// ── DEMO PLACES ───────────────────────────────────────────────────────
+var DEMO_PLACES = [
+  {
+    name:"Moe Joe's",
+    subtitle:'Cajun · Caribbean Cuisine',
+    address:'24033 W Lockport St, Plainfield, IL',
+    phone:'(815) 230-2790',
+    hours:'S-Th 11:00 AM–1:00 AM · F-Sa 11:00 AM–2:00 AM',
+    photo:'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&h=300&fit=crop',
+    init:'MJ', likes:34, type:'place',
+    specials:'Specials & Events — coming soon.',
+    onShift:'Bartenders on Shift — feature coming soon.'
+  },
+  {
+    name:"Big Sammy's",
+    subtitle:'Restaurant & Bar',
+    address:'14206 US-30, Plainfield, IL 60544',
+    phone:'(815) 556-8121',
+    hours:'Open · 11:00 AM–11:00 PM',
+    photo:'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&h=300&fit=crop',
+    init:'BS', likes:61, type:'place',
+    specials:'Specials & Events — coming soon.',
+    onShift:'Bartenders on Shift — feature coming soon.'
+  },
+  {
+    name:'Uptown Tap & Eatery',
+    subtitle:'Tap & Eatery',
+    address:'24035 W Lockport St, Plainfield, IL 60544',
+    phone:'(815) 733-5626',
+    hours:'Open · 11:00 AM–1:00 AM',
+    photo:'https://images.unsplash.com/photo-1568644396922-5c3bfae12521?w=600&h=300&fit=crop',
+    init:'UT', likes:48, type:'place',
+    specials:'Specials & Events — coming soon.',
+    onShift:'Bartenders on Shift — feature coming soon.'
+  }
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────
+var S = {
+  role:null, myProf:null,
+  tPhoto:'', pPhoto:'', plPhoto:'',
+  tenderProfs:[], placeProfs:[], patronProfs:[],
+  deckProfs:[], deckIdx:0, deckTab:'t', deckLoaded:false,
+  findLoaded:false,
+  activeCard:null, dragging:false, sx:0, cx:0,
+  allTenders:[], allPatrons:[], allPlaces:[],
+  dashReqs:[], adminData:null
+};
+
+// ── PERSIST ───────────────────────────────────────────────────────────
+function saveProfile(p){try{localStorage.setItem(LS_KEY,JSON.stringify(p));}catch(e){}}
+function loadSaved(){try{var d=localStorage.getItem(LS_KEY);return d?JSON.parse(d):null;}catch(e){return null;}}
+function clearProfile(){
+  try{localStorage.removeItem(LS_KEY);}catch(e){}
+  S.myProf=null; S.role=null;
+  document.getElementById('myprofcont').style.display='none';
+  document.getElementById('noprof').style.display='block';
+  document.getElementById('bnav').style.display='none';
+  go('landing');
 }
-function tick(){var n=new Date();var h=n.getHours()%12||12;var m=n.getMinutes().toString().padStart(2,'0');document.getElementById('clock').textContent=h+':'+m;}
-tick();setInterval(tick,10000);
+
+// ── CLOCK ─────────────────────────────────────────────────────────────
+function tick(){
+  var n=new Date(),h=n.getHours()%12||12,m=String(n.getMinutes()).padStart(2,'0'),t=h+':'+m;
+  for(var i=1;i<=11;i++){var e=document.getElementById('c'+i);if(e)e.textContent=t;}
+}
+tick(); setInterval(tick,10000);
+
+// ── INIT ──────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('bnav').style.display='flex';
+  var saved=loadSaved();
+  if(saved){
+    S.myProf=saved; S.role=saved.type;
+    showNav(); fillMyProf();
+    go('home'); loadHome();
+  }
+});
+
+// ── NAV ───────────────────────────────────────────────────────────────
+function go(name){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('active');});
+  var scr=document.getElementById('screen-'+name);
+  if(scr)scr.classList.add('active');
+  var ni=document.getElementById('nav-'+name);
+  if(ni)ni.classList.add('active');
+  if(name==='follow'&&!S.deckLoaded)loadDeck();
+  if(name==='find'&&!S.findLoaded)loadFind();
+  if(name==='following')renderFollowing();
+  window.scrollTo(0,0);
+}
+
+function showNav(){
+  document.getElementById('bnav').style.display='flex';
+  if(S.role==='tender'||S.role==='place'){
+    document.getElementById('nav-dashboard').style.display='flex';
+  }
+}
+
+function setRole(role){
+  S.role=role; showNav();
+  go(role==='tender'?'tender-create':role==='patron'?'patron-create':'place-create');
+}
+
+function goAdmin(){go('admin');}
+function goFollow(tab){setFollowTab(tab);go('follow');}
+
+// ── PHOTO UPLOAD ──────────────────────────────────────────────────────
+function uploadPhoto(e,who){
+  var file=e.target.files[0]; if(!file)return;
+  var prog=document.getElementById(who+'uprog');
+  prog.classList.add('show');
+  var fd=new FormData();
+  fd.append('file',file); fd.append('upload_preset',CL_PRESET);
+  fetch(CL_URL,{method:'POST',body:fd})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var url=d.secure_url;
+      if(who==='t'){S.tPhoto=url; setPhotoPreview('tpimg','tpzone',url);}
+      else if(who==='p'){S.pPhoto=url; setPhotoPreview('ppimg','ppzone',url);}
+      else{S.plPhoto=url; setPhotoPreview('plpimg','plpzone',url);}
+      prog.classList.remove('show');
+    })
+    .catch(function(){prog.classList.remove('show');toast('Upload failed',true);});
+}
+
+function setPhotoPreview(imgId,zoneId,url){
+  var img=document.getElementById(imgId);
+  img.src=url; img.classList.add('show');
+  document.getElementById(zoneId).classList.add('hp');
+}
+
+// ── VALIDATION ────────────────────────────────────────────────────────
+function vName(v){return !!(v&&v.trim().length>=2);}
+function vPhone(v){return !!(v&&/^\+?[\d\s\-().]{7,15}$/.test(v.trim()));}
+function vEmail(v){return !!(v&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()));}
+function vReq(v){return !!(v&&v.trim());}
+function setErr(iid,eid,ok){
+  var inp=document.getElementById(iid),err=document.getElementById(eid);
+  if(inp){if(!ok)inp.classList.add('err');else inp.classList.remove('err');}
+  if(err){if(!ok)err.classList.add('show');else err.classList.remove('show');}
+  return ok;
+}
+
+// ── TENDER FORM ───────────────────────────────────────────────────────
+document.getElementById('tform').addEventListener('submit',function(e){
+  e.preventDefault();
+  var n=document.getElementById('tn').value,ph=document.getElementById('tph').value,
+      em=document.getElementById('tem').value,es=document.getElementById('tes').value,
+      vi=document.getElementById('tvi').value;
+  var ok=setErr('tn','etn',vName(n))&setErr('tph','etph',vPhone(ph))&
+         setErr('tem','etem',vEmail(em))&setErr('tes','etes',vReq(es))&setErr('tvi','etvi',vReq(vi));
+  if(!ok)return;
+  var btn=document.getElementById('tsub'),inn=document.getElementById('tbinn');
+  btn.disabled=true; inn.innerHTML='<div class="spin"></div><span>Creating…</span>';
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'action=profile&name='+enc(n)+'&phone='+enc(ph)+'&email='+enc(em)+'&establishment='+enc(es)+'&vibe='+enc(vi)+'&photo='+enc(S.tPhoto)})
+  .then(function(){afterTender(n,ph,em,es,vi);}).catch(function(){afterTender(n,ph,em,es,vi);});
+});
+
+function afterTender(n,ph,em,es,vi){
+  setTimeout(function(){
+    S.myProf={type:'tender',name:n.trim(),phone:ph.trim(),email:em.trim(),est:es.trim(),vibe:vi.trim(),photo:S.tPhoto,likes:0,onShift:false};
+    saveProfile(S.myProf); fillMyProf();
+    document.getElementById('nav-dashboard').style.display='flex';
+    document.getElementById('tform-view').style.display='none';
+    document.getElementById('tsname').textContent=n.trim().split(' ')[0].toUpperCase();
+    document.getElementById('tsucc').classList.add('show');
+  },700);
+}
+
+// ── PATRON FORM ───────────────────────────────────────────────────────
+document.getElementById('pform').addEventListener('submit',function(e){
+  e.preventDefault();
+  var fn=document.getElementById('pfn').value,ln=document.getElementById('pln').value,
+      em=document.getElementById('pem').value,ph=document.getElementById('pph').value;
+  var ok=setErr('pfn','epfn',vReq(fn))&setErr('pln','epln',vReq(ln))&
+         setErr('pem','epem',vEmail(em))&setErr('pph','epph',vPhone(ph));
+  if(!ok)return;
+  var btn=document.getElementById('psub'),inn=document.getElementById('pbinn');
+  btn.disabled=true; inn.innerHTML='<div class="spin" style="border-top-color:var(--bl);border-color:rgba(64,196,255,.15);"></div><span>Creating…</span>';
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'action=patron&firstName='+enc(fn)+'&lastName='+enc(ln)+'&email='+enc(em)+'&phone='+enc(ph)+'&photo='+enc(S.pPhoto)})
+  .then(function(){afterPatron(fn,ln,em,ph);}).catch(function(){afterPatron(fn,ln,em,ph);});
+});
+
+function afterPatron(fn,ln,em,ph){
+  setTimeout(function(){
+    S.myProf={type:'patron',name:fn.trim()+' '+ln.trim(),firstName:fn.trim(),email:em.trim(),phone:ph.trim(),photo:S.pPhoto,following:{tenders:[],places:[]}};
+    saveProfile(S.myProf); fillMyProf();
+    document.getElementById('pform-view').style.display='none';
+    document.getElementById('psname').textContent=fn.trim().toUpperCase();
+    document.getElementById('psucc').classList.add('show');
+  },700);
+}
+
+// ── PLACE FORM ────────────────────────────────────────────────────────
+document.getElementById('plform').addEventListener('submit',function(e){
+  e.preventDefault();
+  var nm=document.getElementById('pln2').value,addr=document.getElementById('pladdr').value,
+      ph=document.getElementById('plphone').value,hrs=document.getElementById('plhours').value,
+      em=document.getElementById('plem').value;
+  var ok=setErr('pln2','epln2',vReq(nm))&setErr('pladdr','epladdr',vReq(addr))&
+         setErr('plphone','eplphone',vPhone(ph))&setErr('plhours','eplhours',vReq(hrs))&setErr('plem','eplem',vEmail(em));
+  if(!ok)return;
+  var btn=document.getElementById('plsub'),inn=document.getElementById('plbinn');
+  btn.disabled=true; inn.innerHTML='<div class="spin" style="border-top-color:var(--pk);border-color:rgba(255,64,129,.15);"></div><span>Creating…</span>';
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'action=place&name='+enc(nm)+'&address='+enc(addr)+'&phone='+enc(ph)+'&hours='+enc(hrs)+'&email='+enc(em)+'&photo='+enc(S.plPhoto)})
+  .then(function(){afterPlace(nm,addr,ph,hrs,em);}).catch(function(){afterPlace(nm,addr,ph,hrs,em);});
+});
+
+function afterPlace(nm,addr,ph,hrs,em){
+  setTimeout(function(){
+    S.myProf={type:'place',name:nm.trim(),address:addr.trim(),phone:ph.trim(),hours:hrs.trim(),email:em.trim(),photo:S.plPhoto,likes:0};
+    saveProfile(S.myProf); fillMyProf();
+    document.getElementById('nav-dashboard').style.display='flex';
+    document.getElementById('plform-view').style.display='none';
+    document.getElementById('plsname').textContent=nm.trim().split(' ')[0].toUpperCase();
+    document.getElementById('plsucc').classList.add('show');
+  },700);
+}
+
+// ── MY PROFILE ────────────────────────────────────────────────────────
+function fillMyProf(){
+  if(!S.myProf)return;
+  var p=S.myProf;
+  document.getElementById('noprof').style.display='none';
+  document.getElementById('myprofcont').style.display='block';
+  document.getElementById('mynm').textContent=p.name;
+  var br=document.getElementById('mybr');
+  if(p.type==='tender'){br.textContent='🍸 '+p.est;br.style.color='var(--gn)';
+    if(p.vibe){document.getElementById('myvb').textContent='"'+p.vibe+'"';document.getElementById('myvb').style.display='block';}
+    document.getElementById('shift-card').style.display='block';
+    document.getElementById('dashlnk').style.display='block';
+    syncShiftUI();
+  } else if(p.type==='place'){br.textContent='🏢 '+p.address;br.style.color='var(--pk)';
+    document.getElementById('dashlnk').style.display='block';
+  } else {br.textContent='👀 Patron';br.style.color='var(--bl)';}
+  if(p.photo){document.getElementById('myphoto').src=p.photo;document.getElementById('myphoto').style.display='block';document.getElementById('myph').style.display='none';}
+  else{document.getElementById('myph').textContent=initials(p.name);}
+  document.getElementById('myph2').textContent=p.phone||'—';
+  document.getElementById('myem').textContent=p.email||'—';
+}
+
+function initials(nm){return(nm||'').split(' ').map(function(x){return x[0]||'';}).join('').toUpperCase().slice(0,2)||'??';}
+
+// ── HOME ──────────────────────────────────────────────────────────────
+function loadHome(){
+  if(!S.myProf)return;
+  var p=S.myProf;
+  var fn=p.type==='patron'?(p.firstName||p.name.split(' ')[0]):p.name.split(' ')[0];
+  document.getElementById('home-greeting').textContent=greeting()+', '+fn+'.';
+  var av=document.getElementById('home-avatar');
+  if(p.photo)av.innerHTML='<img src="'+esc(p.photo)+'" style="width:100%;height:100%;object-fit:cover;">';
+  else av.textContent=initials(p.name);
+  if(p.type==='tender'||p.type==='place'){
+    document.getElementById('home-shift-card').style.display='block';
+    syncShiftUI();
+  }
+  loadLive();
+}
+
+function greeting(){var h=new Date().getHours();return h<12?'Good morning':h<17?'Good afternoon':'Good evening';}
+
+function loadLive(){
+  var el=document.getElementById('home-live'); if(!el)return;
+  fetch(SCRIPT_URL+'?action=profiles')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var profs=(d.result==='success'&&d.profiles)?d.profiles:[];
+      var live=profs.filter(function(p){return p.onShift;});
+      if(!live.length){el.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No tenders on shift right now.</div>';return;}
+      el.innerHTML=live.map(function(t){
+        var ph=t.photo?'<img src="'+esc(t.photo)+'" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,230,118,.4);flex-shrink:0;">':'<div style="width:34px;height:34px;border-radius:50%;background:rgba(0,230,118,.1);border:1.5px solid rgba(0,230,118,.3);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:12px;color:var(--gn);flex-shrink:0;">'+esc(initials(t.name))+'</div>';
+        return '<div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--eg);">'+ph+'<div><div style="font-size:12px;font-weight:600;color:var(--tx);">'+esc(t.name)+'</div><div style="font-size:10px;color:var(--gn);">🍸 '+esc(t.est||'')+'</div></div><span class="badge-live" style="margin-left:auto;">LIVE</span></div>';
+      }).join('');
+    }).catch(function(){el.innerHTML='';});
+}
+
+// ── SHIFT ─────────────────────────────────────────────────────────────
+function toggleShift(){
+  if(!S.myProf)return;
+  S.myProf.onShift=!S.myProf.onShift;
+  saveProfile(S.myProf);
+  toast(S.myProf.onShift?'✓ You\'re on shift!':'Off shift');
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'action=shift&email='+enc(S.myProf.email||S.myProf.name)+'&onShift='+(S.myProf.onShift?'1':'0')}).catch(function(){});
+}
+
+function syncShiftUI(){
+  var on=S.myProf&&S.myProf.onShift;
+  [['home-stog','home-sknob','home-shift-lbl'],['prof-stog','prof-sknob','shift-lbl']].forEach(function(ids){
+    var tog=document.getElementById(ids[0]),knob=document.getElementById(ids[1]),lbl=document.getElementById(ids[2]);
+    if(tog)tog.style.background=on?'var(--gn)':'var(--eg)';
+    if(knob)knob.style.left=on?'22px':'2px';
+    if(lbl){lbl.textContent=on?"You're live — patrons can see you're working":"Let patrons know you're working";lbl.style.color=on?'var(--gn)':'var(--mu)';}
+  });
+}
+
+// ── FOLLOW (SWIPE DECK) ───────────────────────────────────────────────
+var followTab='t';
+
+function setFollowTab(tab){
+  followTab=tab;
+  var tBtn=document.getElementById('ftab-t'),plBtn=document.getElementById('ftab-pl');
+  if(tab==='t'){
+    tBtn.style.background='var(--or)';tBtn.style.borderColor='var(--or)';tBtn.style.color='#fff';
+    plBtn.style.background='transparent';plBtn.style.borderColor='var(--eg)';plBtn.style.color='var(--mu)';
+    S.deckProfs=S.tenderProfs.length?S.tenderProfs:DEMO_TENDERS.slice();
+  } else {
+    plBtn.style.background='var(--pk)';plBtn.style.borderColor='var(--pk)';plBtn.style.color='#fff';
+    tBtn.style.background='transparent';tBtn.style.borderColor='var(--eg)';tBtn.style.color='var(--mu)';
+    S.deckProfs=S.placeProfs.length?S.placeProfs:DEMO_PLACES.slice();
+  }
+  document.getElementById('tcnt').textContent=S.deckProfs.length;
+  S.deckIdx=0; renderDeck();
+}
+
+function loadDeck(){
+  S.deckLoaded=true;
+  fetch(SCRIPT_URL+'?action=profiles')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var real=(d.result==='success'&&d.profiles)?d.profiles:[];
+      real=real.map(function(p){p.init=initials(p.name);p.type='tender';return p;});
+      var seen={};
+      S.tenderProfs=real.concat(DEMO_TENDERS).filter(function(p){if(seen[p.name])return false;seen[p.name]=true;return true;});
+      S.placeProfs=DEMO_PLACES.slice();
+      setFollowTab(followTab);
+    }).catch(function(){S.tenderProfs=DEMO_TENDERS.slice();S.placeProfs=DEMO_PLACES.slice();setFollowTab(followTab);});
+}
+
+function resetDeck(){S.deckIdx=0;renderDeck();}
+
+function renderDeck(){
+  var wrap=document.getElementById('dwrap'),empty=document.getElementById('dempty'),
+      acts=document.getElementById('sact'),hint=document.getElementById('shint'),
+      ctr=document.getElementById('dctr');
+  wrap.innerHTML='';ctr.innerHTML='';S.activeCard=null;
+  var rem=S.deckProfs.length-S.deckIdx;
+  if(rem<=0){empty.classList.add('show');acts.style.display='none';hint.style.display='none';return;}
+  empty.classList.remove('show');acts.style.display='flex';hint.style.display='block';
+  document.getElementById('tcnt').textContent=S.deckProfs.length;
+  S.deckProfs.forEach(function(_,i){var d=document.createElement('div');d.className='cdot'+(i===S.deckIdx?' on':'');ctr.appendChild(d);});
+  var n=Math.min(3,rem);
+  for(var i=n-1;i>=0;i--){var idx=S.deckIdx+i;if(idx>=S.deckProfs.length)continue;buildCard(S.deckProfs[idx],i,wrap);}
+  var top=wrap.querySelector('[data-top="1"]');if(top)attachDrag(top);
+}
+
+function buildCard(p,sp,wrap){
+  var c=document.createElement('div');
+  c.className='scard';c.dataset.top=sp===0?'1':'0';
+  c.style.cssText='transform:scale('+(1-sp*.03)+') translateY('+(sp*10)+'px);z-index:'+(10-sp)+';transition:transform .3s;';
+  var isPlace=p.type==='place';
+  var ph=p.photo?'<img class="cphoto" src="'+esc(p.photo)+'" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">'+'<div class="cphoto-ph" style="display:none;">'+esc(p.init||initials(p.name))+'</div>'
+    :'<div class="cphoto-ph">'+esc(p.init||initials(p.name))+'</div>';
+  var shift=p.onShift?'<span class="badge-shift">On Shift</span>':'';
+  var barText=isPlace?('🏢 '+esc(p.address||'')):'🍸 '+esc(p.est||'');
+  var barColor=isPlace?'color:var(--pk)':'color:var(--gn)';
+  var vibeText=isPlace?(p.hours||''):(p.vibe||'');
+  c.innerHTML=ph+'<div class="cgrad"></div><div class="stamp sl">LIKE</div><div class="stamp sn">NOPE</div>'
+    +'<div class="cinfo"><div class="cname">'+esc(p.name)+shift+'</div>'
+    +'<div class="cbar" style="'+barColor+'">'+barText+'</div>'
+    +'<div class="cvibe">'+esc(vibeText)+'</div></div>';
+  wrap.appendChild(c);
+}
+
+function attachDrag(c){
+  S.activeCard=c;
+  c.addEventListener('mousedown',ds);c.addEventListener('touchstart',ds,{passive:true});
+}
+function ds(e){
+  if(!S.activeCard)return;
+  S.dragging=true;S.sx=(e.type==='touchstart'?e.touches[0].clientX:e.clientX);S.cx=0;
+  S.activeCard.style.transition='none';
+  document.addEventListener('mousemove',dm);document.addEventListener('touchmove',dm,{passive:false});
+  document.addEventListener('mouseup',de);document.addEventListener('touchend',de);
+}
+function dm(e){
+  if(!S.dragging||!S.activeCard)return;
+  if(e.type==='touchmove')e.preventDefault();
+  S.cx=(e.type==='touchmove'?e.touches[0].clientX:e.clientX)-S.sx;
+  S.activeCard.style.transform='translateX('+S.cx+'px) rotate('+(S.cx*.07)+'deg) scale(1)';
+  var sl=S.activeCard.querySelector('.sl'),sn=S.activeCard.querySelector('.sn');
+  if(S.cx>40){sl.style.opacity=Math.min(1,(S.cx-40)/60);sn.style.opacity=0;}
+  else if(S.cx<-40){sn.style.opacity=Math.min(1,(-S.cx-40)/60);sl.style.opacity=0;}
+  else{sl.style.opacity=0;sn.style.opacity=0;}
+}
+function de(){
+  if(!S.dragging||!S.activeCard)return;
+  S.dragging=false;
+  document.removeEventListener('mousemove',dm);document.removeEventListener('touchmove',dm);
+  document.removeEventListener('mouseup',de);document.removeEventListener('touchend',de);
+  if(Math.abs(S.cx)>90)flyOut(S.cx>0?'right':'left');
+  else{
+    S.activeCard.style.transition='transform .4s cubic-bezier(.22,1,.36,1)';
+    S.activeCard.style.transform='scale(1) translateX(0) rotate(0)';
+    S.activeCard.querySelectorAll('.stamp').forEach(function(s){s.style.opacity=0;});
+  }
+}
+function swipe(dir){if(!S.activeCard)return;flyOut(dir);}
+function flyOut(dir){
+  var c=S.activeCard;S.activeCard=null;
+  var x=dir==='right'?window.innerWidth+300:-(window.innerWidth+300);
+  c.style.transition='transform .42s cubic-bezier(.22,1,.36,1)';
+  c.style.transform='translateX('+x+'px) rotate('+(dir==='right'?25:-25)+'deg)';
+  if(dir==='right'){toast('❤️ Follow Request Sent!');sendFollow(S.deckIdx);}
+  S.deckIdx++;
+  setTimeout(renderDeck,400);
+}
+function sendFollow(idx){
+  var t=S.deckProfs[idx];if(!t)return;
+  var pn=S.myProf?S.myProf.name:'Anonymous',pe=S.myProf?S.myProf.email:'';
+  var action=t.type==='place'?'followPlace':'follow';
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'action='+action+'&tenderName='+enc(t.name)+'&patronName='+enc(pn)+'&patronEmail='+enc(pe)}).catch(function(){});
+}
+
+// ── FIND (BROWSE) ─────────────────────────────────────────────────────
+var findTab='t';
+function findTab_set(t){
+  findTab=t;
+  ['t','p','pl'].forEach(function(x){
+    document.getElementById('fv-'+x).style.display=x===t?'block':'none';
+    document.getElementById('ftd-'+x).className='atab'+(x===t?' on':'');
+  });
+}
+function loadFind(){
+  S.findLoaded=true;
+  fetch(SCRIPT_URL+'?action=admin')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.result!=='success')return;
+      S.allTenders=d.tenders||[];
+      S.allPatrons=d.patrons||[];
+      S.allPlaces=d.places||[];
+      renderFindTenders();
+      renderFindPatrons();
+      renderFindPlaces();
+    }).catch(function(){renderFindTenders();renderFindPatrons();renderFindPlaces();});
+}
+
+function findTab(t){findTab_set(t);}
+
+function renderFindTenders(){
+  var el=document.getElementById('fl-t');
+  var all=S.allTenders.concat(DEMO_TENDERS.map(function(d){return{name:d.name,est:d.est,vibe:d.vibe,photo:d.photo,likes:d.likes,onShift:d.onShift};}));
+  var seen={};
+  all=all.filter(function(t){if(seen[t.name])return false;seen[t.name]=true;return true;});
+  S.allTenders=all;
+  if(!all.length){el.innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:12px;">No tenders yet.</div>';return;}
+  el.innerHTML=all.map(function(t,i){
+    var ph=t.photo?'<img class="plist-av" src="'+esc(t.photo)+'" alt="">':'<div class="plist-av-ph">'+esc(initials(t.name))+'</div>';
+    var shift=t.onShift?'<span class="badge-shift" style="margin-left:4px;">On Shift</span>':'';
+    return '<div class="plist-item" data-pidx="'+i+'" data-ptype="t">'+ph+'<div style="flex:1;"><div class="plist-nm">'+esc(t.name)+shift+'</div><div class="plist-dt">🍸 '+esc(t.est)+'</div></div><i class="ti ti-chevron-right" style="color:var(--dm);font-size:14px;"></i></div>';
+  }).join('');
+  addListeners(el,'t');
+}
+
+function renderFindPatrons(){
+  var el=document.getElementById('fl-p');
+  S.allPatrons=S.allPatrons||[];
+  if(!S.allPatrons.length){el.innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:12px;">No patrons yet.</div>';return;}
+  el.innerHTML=S.allPatrons.map(function(p,i){
+    var nm=((p.firstName||'')+' '+(p.lastName||'')).trim();
+    var ph=p.photo?'<img class="plist-av" src="'+esc(p.photo)+'" alt="" style="border:1px solid rgba(64,196,255,.3);">':'<div class="plist-av-ph" style="border-color:rgba(64,196,255,.2);color:var(--bl);">'+esc(initials(nm))+'</div>';
+    return '<div class="plist-item" data-pidx="'+i+'" data-ptype="p">'+ph+'<div style="flex:1;"><div class="plist-nm">'+esc(nm)+'</div><div class="plist-dt">👀 Patron</div></div><i class="ti ti-chevron-right" style="color:var(--dm);font-size:14px;"></i></div>';
+  }).join('');
+  addListeners(el,'p');
+}
+
+function renderFindPlaces(){
+  var el=document.getElementById('fl-pl');
+  var all=S.allPlaces.concat(DEMO_PLACES.map(function(d){return{name:d.name,subtitle:d.subtitle,address:d.address,phone:d.phone,hours:d.hours,photo:d.photo,likes:d.likes};}));
+  var seen={};
+  all=all.filter(function(p){if(seen[p.name])return false;seen[p.name]=true;return true;});
+  S.allPlaces=all;
+  if(!all.length){el.innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:12px;">No places yet.</div>';return;}
+  el.innerHTML=all.map(function(p,i){
+    var ph=p.photo?'<img class="plist-av" src="'+esc(p.photo)+'" alt="" style="border:1px solid rgba(255,64,129,.3);border-radius:8px;object-fit:cover;">':'<div class="plist-av-ph" style="border-color:rgba(255,64,129,.2);color:var(--pk);border-radius:8px;">'+esc(initials(p.name))+'</div>';
+    return '<div class="plist-item" data-pidx="'+i+'" data-ptype="pl">'+ph+'<div style="flex:1;"><div class="plist-nm">'+esc(p.name)+'</div><div class="plist-dt" style="color:var(--pk);">'+esc(p.address||'')+'</div></div><i class="ti ti-chevron-right" style="color:var(--dm);font-size:14px;"></i></div>';
+  }).join('');
+  addListeners(el,'pl');
+}
+
+function addListeners(el,type){
+  el.querySelectorAll('.plist-item').forEach(function(item){
+    item.addEventListener('click',function(){
+      openModal(this.dataset.ptype,parseInt(this.dataset.pidx));
+    });
+  });
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────
+function openModal(type,idx){
+  var p;
+  if(type==='t')p=S.allTenders[idx];
+  else if(type==='p')p=S.allPatrons[idx];
+  else p=S.allPlaces[idx];
+  if(!p)return;
+
+  var isPatron=type==='p',isPlace=type==='pl';
+  var nm=isPatron?((p.firstName||'')+' '+(p.lastName||'')).trim():p.name;
+  var init=initials(nm);
+
+  var pwrap=document.getElementById('modal-photo-wrap');
+  if(p.photo)pwrap.innerHTML='<img class="modal-photo" src="'+esc(p.photo)+'" alt="">';
+  else pwrap.innerHTML='<div class="modal-ph">'+esc(init)+'</div>';
+
+  document.getElementById('modal-name').textContent=nm;
+  var bar=document.getElementById('modal-bar'),vibe=document.getElementById('modal-vibe');
+
+  if(isPatron){bar.textContent='👀 Patron';bar.style.color='var(--bl)';vibe.textContent='';}
+  else if(isPlace){
+    bar.textContent='📍 '+esc(p.address||'');bar.style.color='var(--pk)';
+    vibe.innerHTML='<div style="font-size:11px;color:var(--mu);margin-bottom:4px;">📞 '+esc(p.phone||'')+'</div><div style="font-size:11px;color:var(--mu);">🕐 '+esc(p.hours||'')+'</div>';
+  } else {
+    bar.innerHTML='🍸 '+esc(p.est||'')+(p.onShift?'<span class="badge-shift" style="margin-left:5px;">On Shift</span>':'');
+    bar.style.color='var(--gn)';
+    vibe.textContent=p.vibe?'"'+p.vibe+'"':'';
+  }
+
+  var act=document.getElementById('modal-action');
+  var isMe=S.myProf&&S.myProf.name===nm;
+  if(isMe){act.innerHTML='<div style="text-align:center;font-size:11px;color:var(--mu);padding:4px 0;">This is your profile</div>';}
+  else if(isPatron){act.innerHTML='<button class="bgn" onclick="followUser(\'patron\',\''+esc(nm)+'\');closeModal();" style="margin-top:0;"><div class="binn"><i class="ti ti-user-plus"></i><span>Follow '+esc(nm.split(' ')[0])+'</span></div></button>';}
+  else if(isPlace){act.innerHTML='<button class="bpu" onclick="followUser(\'place\',\''+esc(nm)+'\');closeModal();" style="margin-top:0;background:linear-gradient(135deg,var(--pk),#b0205a);"><div class="binn"><i class="ti ti-heart"></i><span>Follow This Place</span></div></button>';}
+  else{act.innerHTML='<button class="bor" onclick="followUser(\'tender\',\''+esc(nm)+'\');closeModal();" style="margin-top:0;"><div class="binn"><i class="ti ti-heart"></i><span>Send Follow Request</span></div></button>';}
+
+  var bg=document.getElementById('modal-bg');
+  bg.style.display='flex';
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal(){
+  var bg=document.getElementById('modal-bg');
+  bg.style.display='none';
+  document.getElementById('modal').classList.remove('show');
+}
+
+function followUser(type,name){
+  var pn=S.myProf?S.myProf.name:'Anonymous',pe=S.myProf?S.myProf.email:'';
+  var action=type==='place'?'followPlace':'follow';
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'action='+action+'&tenderName='+enc(name)+'&patronName='+enc(pn)+'&patronEmail='+enc(pe)}).catch(function(){});
+  toast(type==='patron'?'✓ Following '+name.split(' ')[0]+'!':'❤️ Follow Request Sent!');
+}
+
+// ── MY FOLLOWING ──────────────────────────────────────────────────────
+function renderFollowing(){
+  var ft=document.getElementById('fol-tenders'),fp=document.getElementById('fol-places');
+  if(!S.myProf){return;}
+  var following=S.myProf.following||{tenders:[],places:[]};
+  if(!following.tenders||!following.tenders.length){ft.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No approved tenders yet. Swipe right to send follow requests.</div>';}
+  else{ft.innerHTML=following.tenders.map(function(t){return '<div class="plist-item"><div class="plist-av-ph">'+esc(initials(t))+'</div><div><div class="plist-nm">'+esc(t)+'</div></div></div>';}).join('');}
+  if(!following.places||!following.places.length){fp.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No approved places yet. Swipe right on a venue to follow.</div>';}
+  else{fp.innerHTML=following.places.map(function(p){return '<div class="plist-item"><div class="plist-av-ph" style="border-color:rgba(255,64,129,.2);color:var(--pk);">'+esc(initials(p))+'</div><div><div class="plist-nm">'+esc(p)+'</div></div></div>';}).join('');}
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────
+function checkDashPin(){
+  var em=document.getElementById('dpin-em').value.trim();
+  var pin=document.getElementById('dpin-in').value.trim();
+  if(pin!==DASH_PIN||!em){document.getElementById('dpin-err').classList.add('show');return;}
+  document.getElementById('dpin-err').classList.remove('show');
+  document.getElementById('dash-pin-view').style.display='none';
+  document.getElementById('dash-content').style.display='block';
+  loadDash(em);
+}
+function lockDash(){
+  document.getElementById('dash-pin-view').style.display='block';
+  document.getElementById('dash-content').style.display='none';
+  document.getElementById('dpin-in').value='';document.getElementById('dpin-em').value='';
+}
+function loadDash(em){
+  document.getElementById('dash-reqs').innerHTML='<div class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div>';
+  fetch(SCRIPT_URL+'?action=dashboard&email='+encodeURIComponent(em))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.result==='success'){
+        document.getElementById('dash-nm').textContent=d.tenderName||em;
+        document.getElementById('dash-lk').textContent=d.likes||0;
+        document.getElementById('dash-pn').textContent=d.pending||0;
+        document.getElementById('dash-ap').textContent=d.approved||0;
+        renderDashReqs(d.requests||[],em);
+      } else {document.getElementById('dash-reqs').innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:12px;">No data found for this email.</div>';}
+    }).catch(function(){document.getElementById('dash-reqs').innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:12px;">Could not load. Try again.</div>';});
+}
+function renderDashReqs(reqs,em){
+  S.dashReqs=reqs;
+  var el=document.getElementById('dash-reqs');
+  var pending=reqs.filter(function(r){return r.status==='pending';});
+  if(!pending.length){
+    el.innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:12px;">'+(reqs.length?'All requests resolved. Nothing pending!':'No follow requests yet.')+'</div>';
+    return;
+  }
+  S._pendingReqs=pending;
+  el.innerHTML=pending.map(function(r,i){
+    var init=initials(r.patronName||'?');
+    var ph=r.patronPhoto?'<img src="'+esc(r.patronPhoto)+'" style="width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;">':'<div class="rav">'+esc(init)+'</div>';
+    return '<div class="rcard" id="dr'+i+'"><div class="rrow">'+ph+'<div><div class="rnm">'+esc(r.patronName||'Unknown')+'</div><div class="rdt">'+esc(r.patronEmail||'')+'</div></div></div>'
+      +'<div class="racts"><button class="rappr" onclick="dashReq('+i+',\'approved\',\''+esc(em)+'\')">✓ Approve</button><button class="rdeny" onclick="dashReq('+i+',\'denied\',\''+esc(em)+'\')">✕ Deny</button></div></div>';
+  }).join('');
+}
+function dashReq(idx,status,em){
+  var r=S._pendingReqs?S._pendingReqs[idx]:null; if(!r)return;
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'action=updateFollow&tenderEmail='+enc(em)+'&patronEmail='+enc(r.patronEmail)+'&status='+enc(status)}).catch(function(){});
+  var c=document.getElementById('dr'+idx); if(c)c.style.display='none';
+  toast(status==='approved'?'✓ Approved!':'✕ Denied');
+  var pn=parseInt(document.getElementById('dash-pn').textContent)||0;
+  var ap=parseInt(document.getElementById('dash-ap').textContent)||0;
+  if(pn>0)document.getElementById('dash-pn').textContent=pn-1;
+  if(status==='approved')document.getElementById('dash-ap').textContent=ap+1;
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────────────
+function checkAdminPin(){
+  var em=document.getElementById('apin-em').value.trim().toLowerCase();
+  var pin=document.getElementById('apin-in').value.trim();
+  var valid=A_EMAILS.some(function(a){return a.toLowerCase()===em;});
+  if(!valid||pin!==A_PIN){document.getElementById('apin-err').classList.add('show');return;}
+  document.getElementById('apin-err').classList.remove('show');
+  document.getElementById('apin-view').style.display='none';
+  document.getElementById('adash-view').style.display='block';
+  loadAdmin();
+}
+function lockAdmin(){
+  document.getElementById('apin-view').style.display='block';
+  document.getElementById('adash-view').style.display='none';
+  document.getElementById('apin-in').value='';document.getElementById('apin-em').value='';
+}
+function aTab(t){
+  ['t','p','pl','r'].forEach(function(x){
+    document.getElementById('av-'+x).style.display=x===t?'block':'none';
+    document.getElementById('at-'+x).className='atab'+(x===t?' on':'');
+  });
+}
+function loadAdmin(){
+  fetch(SCRIPT_URL+'?action=admin')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.result!=='success'){toast('Could not load.',true);return;}
+      S.adminData=d;
+      document.getElementById('a-tn').textContent=(d.tenders||[]).length;
+      document.getElementById('a-pn').textContent=(d.patrons||[]).length;
+      document.getElementById('a-pl').textContent=(d.places||[]).length;
+      document.getElementById('a-rn').textContent=(d.requests||[]).length;
+      renderAdminList('al-t',d.tenders||[],'t');
+      renderAdminList('al-p',d.patrons||[],'p');
+      renderAdminList('al-pl',d.places||[],'pl');
+      renderAdminReqs(d.requests||[]);
+    }).catch(function(){toast('Could not load.',true);});
+}
+function renderAdminList(elId,items,type){
+  var el=document.getElementById(elId);
+  if(!items.length){el.innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:12px;">None yet.</div>';return;}
+  if(type==='t'){S.allTenders=items.concat(DEMO_TENDERS).filter(function(t,i,a){return a.findIndex(function(x){return x.name===t.name;})==i;});}
+  if(type==='p'){S.allPatrons=items;}
+  if(type==='pl'){S.allPlaces=items.concat(DEMO_PLACES).filter(function(p,i,a){return a.findIndex(function(x){return x.name===p.name;})==i;});}
+  el.innerHTML=items.map(function(item,i){
+    var nm=type==='p'?((item.firstName||'')+' '+(item.lastName||'')).trim():item.name;
+    var ph=item.photo?'<img src="'+esc(item.photo)+'" style="width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;">':'<div class="rav">'+esc(initials(nm))+'</div>';
+    var sub=type==='t'?item.est:type==='p'?item.email:item.address;
+    return '<div class="rcard" data-pidx="'+i+'" data-ptype="'+type+'" style="cursor:pointer;">'
+      +'<div class="rrow">'+ph+'<div style="flex:1;"><div class="rnm">'+esc(nm)+'</div><div class="rdt">'+esc(sub||'')+'</div></div>'
+      +'<i class="ti ti-chevron-right" style="color:var(--dm);font-size:14px;"></i></div></div>';
+  }).join('');
+  el.querySelectorAll('.rcard').forEach(function(card){
+    card.addEventListener('click',function(){openModal(this.dataset.ptype,parseInt(this.dataset.pidx));});
+  });
+}
+function renderAdminReqs(reqs){
+  var el=document.getElementById('al-r');
+  var sorted=reqs.slice().sort(function(a,b){return a.status==='pending'?-1:1;});
+  if(!sorted.length){el.innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:12px;">No requests yet.</div>';return;}
+  S._adminReqs=sorted;
+  el.innerHTML=sorted.map(function(r,i){
+    var ph=r.patronPhoto?'<img src="'+esc(r.patronPhoto)+'" style="width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;">':'<div class="rav">'+esc(initials(r.patronName||'?'))+'</div>';
+    var st=r.status==='approved'?'<span class="rst rapst">✓ Approved</span>':r.status==='denied'?'<span class="rst rdnst">✕ Denied</span>':'<div class="racts"><button class="rappr" onclick="adminReq('+i+',\'approved\')">✓ Approve</button><button class="rdeny" onclick="adminReq('+i+',\'denied\')">✕ Deny</button></div>';
+    return '<div class="rcard" id="ar'+i+'"><div style="font-size:10px;color:var(--mu);margin-bottom:5px;">→ <span style="color:var(--or);">'+esc(r.tenderName||'')+'</span></div>'
+      +'<div class="rrow">'+ph+'<div><div class="rnm">'+esc(r.patronName||'Unknown')+'</div><div class="rdt">'+esc(r.patronEmail||'')+'</div></div></div>'+st+'</div>';
+  }).join('');
+}
+function adminReq(idx,status){
+  var r=S._adminReqs?S._adminReqs[idx]:null; if(!r)return;
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'action=adminUpdateFollow&tenderName='+enc(r.tenderName)+'&patronEmail='+enc(r.patronEmail)+'&status='+enc(status)}).catch(function(){});
+  var c=document.getElementById('ar'+idx);var a=c?c.querySelector('.racts'):null;
+  if(a)a.outerHTML=status==='approved'?'<span class="rst rapst">✓ Approved</span>':'<span class="rst rdnst">✕ Denied</span>';
+  toast(status==='approved'?'✓ Approved!':'✕ Denied');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────
+var tt;
+function toast(msg,or){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(or?' or':'')+' show';
+  clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show');},2200);
+}
+
+// ── UTIL ──────────────────────────────────────────────────────────────
+function enc(s){return encodeURIComponent(s||'');}
+function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 </script>
 </body>
 </html>
