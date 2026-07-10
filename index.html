@@ -1047,9 +1047,9 @@ function sendFollow(idx){
 }
 
 // ── FIND (BROWSE) ─────────────────────────────────────────────────────
-var findTab='t';
+var curFindTab='t';
 function findTab_set(t){
-  findTab=t;
+  curFindTab=t;
   ['t','p','pl'].forEach(function(x){
     document.getElementById('fv-'+x).style.display=x===t?'block':'none';
     document.getElementById('ftd-'+x).className='atab'+(x===t?' on':'');
@@ -1272,22 +1272,30 @@ function loadAdmin(){
     .then(function(d){
       if(d.result!=='success'){toast('Could not load.',true);return;}
       S.adminData=d;
-      document.getElementById('a-tn').textContent=(d.tenders||[]).length;
-      document.getElementById('a-pn').textContent=(d.patrons||[]).length;
-      document.getElementById('a-pl').textContent=(d.places||[]).length;
-      document.getElementById('a-rn').textContent=(d.requests||[]).length;
       renderAdminList('al-t',d.tenders||[],'t');
       renderAdminList('al-p',d.patrons||[],'p');
       renderAdminList('al-pl',d.places||[],'pl');
       renderAdminReqs(d.requests||[]);
+      document.getElementById('a-tn').textContent=S.allTenders.length;
+      document.getElementById('a-pn').textContent=S.allPatrons.length;
+      document.getElementById('a-pl').textContent=S.allPlaces.length;
+      document.getElementById('a-rn').textContent=(d.requests||[]).length;
     }).catch(function(){toast('Could not load.',true);});
 }
-function renderAdminList(elId,items,type){
+function renderAdminList(elId,rawItems,type){
   var el=document.getElementById(elId);
+  var items;
+  if(type==='t'){
+    items=rawItems.concat(DEMO_TENDERS).filter(function(t,i,a){return a.findIndex(function(x){return x.name===t.name;})==i;});
+    S.allTenders=items;
+  } else if(type==='pl'){
+    items=rawItems.concat(DEMO_PLACES).filter(function(p,i,a){return a.findIndex(function(x){return x.name===p.name;})==i;});
+    S.allPlaces=items;
+  } else {
+    items=rawItems;
+    S.allPatrons=items;
+  }
   if(!items.length){el.innerHTML='<div style="text-align:center;padding:24px;color:var(--mu);font-size:12px;">None yet.</div>';return;}
-  if(type==='t'){S.allTenders=items.concat(DEMO_TENDERS).filter(function(t,i,a){return a.findIndex(function(x){return x.name===t.name;})==i;});}
-  if(type==='p'){S.allPatrons=items;}
-  if(type==='pl'){S.allPlaces=items.concat(DEMO_PLACES).filter(function(p,i,a){return a.findIndex(function(x){return x.name===p.name;})==i;});}
   el.innerHTML=items.map(function(item,i){
     var nm=type==='p'?((item.firstName||'')+' '+(item.lastName||'')).trim():item.name;
     var ph=item.photo?'<img src="'+esc(item.photo)+'" style="width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;">':'<div class="rav">'+esc(initials(nm))+'</div>';
