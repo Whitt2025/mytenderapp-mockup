@@ -273,7 +273,7 @@ input.err{border-color:rgba(255,64,64,.5);}
       <i class="ti ti-chevron-right" style="margin-left:auto;color:var(--dm);font-size:16px;"></i>
     </div>
     <div style="margin-top:12px;">
-      <div class="sec-label">Live Tonight</div>
+      <div class="sec-label">Pouring Now</div>
       <div id="home-live"><div style="font-size:12px;color:var(--dm);font-style:italic;">Loading…</div></div>
     </div>
   </div>
@@ -900,13 +900,29 @@ function loadLive(){
     .then(function(r){return r.json();})
     .then(function(d){
       var profs=(d.result==='success'&&d.profiles)?d.profiles:[];
-      var live=profs.filter(function(p){return p.onShift;});
-      if(!live.length){el.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No tenders on shift right now.</div>';return;}
-      el.innerHTML=live.map(function(t){
-        var ph=t.photo?'<img src="'+esc(t.photo)+'" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,230,118,.4);flex-shrink:0;">':'<div style="width:34px;height:34px;border-radius:50%;background:rgba(0,230,118,.1);border:1.5px solid rgba(0,230,118,.3);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:12px;color:var(--gn);flex-shrink:0;">'+esc(initials(t.name))+'</div>';
-        return '<div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--eg);">'+ph+'<div><div style="font-size:12px;font-weight:600;color:var(--tx);">'+esc(t.name)+'</div><div style="font-size:10px;color:var(--gn);">🍸 '+esc(t.est||'')+'</div></div><span class="badge-live" style="margin-left:auto;">LIVE</span></div>';
-      }).join('');
-    }).catch(function(){el.innerHTML='';});
+      renderLiveList(el,profs);
+    }).catch(function(){renderLiveList(el,[]);});
+}
+function renderLiveList(el,realProfs){
+  var demoCopies=getDemoTendersWithShift();
+  var seen={};
+  var merged=realProfs.concat(demoCopies).filter(function(p){if(seen[p.name])return false;seen[p.name]=true;return true;});
+  var live=merged.filter(function(p){return p.onShift;});
+  if(!live.length){el.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No tenders pouring right now.</div>';return;}
+  el.innerHTML=live.map(function(t){
+    var ph=t.photo?'<img src="'+esc(t.photo)+'" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,230,118,.4);flex-shrink:0;">':'<div style="width:34px;height:34px;border-radius:50%;background:rgba(0,230,118,.1);border:1.5px solid rgba(0,230,118,.3);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:12px;color:var(--gn);flex-shrink:0;">'+esc(initials(t.name))+'</div>';
+    return '<div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--eg);">'+ph+'<div><div style="font-size:12px;font-weight:600;color:var(--tx);">'+esc(t.name)+'</div><div style="font-size:10px;color:var(--gn);">🍸 '+esc(t.est||'')+'</div></div><span class="badge-live" style="margin-left:auto;">POURING</span></div>';
+  }).join('');
+}
+
+// ── SHIFT (DEMO OVERRIDES FOR ADMIN) ──────────────────────────────────
+var DEMO_SHIFT_KEY='mta_demo_shifts';
+function getDemoShifts(){try{var d=localStorage.getItem(DEMO_SHIFT_KEY);return d?JSON.parse(d):{};}catch(e){return{};}}
+function setDemoShift(nm,val){var m=getDemoShifts();m[nm]=val;try{localStorage.setItem(DEMO_SHIFT_KEY,JSON.stringify(m));}catch(e){}}
+function isDemoTenderName(nm){return DEMO_TENDERS.some(function(t){return t.name===nm;});}
+function getDemoTendersWithShift(){
+  var shifts=getDemoShifts();
+  return DEMO_TENDERS.map(function(t){var c={};for(var k in t)c[k]=t[k];c.onShift=!!shifts[t.name];return c;});
 }
 
 // ── SHIFT ─────────────────────────────────────────────────────────────
@@ -956,10 +972,10 @@ function loadDeck(){
       var real=(d.result==='success'&&d.profiles)?d.profiles:[];
       real=real.map(function(p){p.init=initials(p.name);p.type='tender';return p;});
       var seen={};
-      S.tenderProfs=real.concat(DEMO_TENDERS).filter(function(p){if(seen[p.name])return false;seen[p.name]=true;return true;});
+      S.tenderProfs=real.concat(getDemoTendersWithShift()).filter(function(p){if(seen[p.name])return false;seen[p.name]=true;return true;});
       S.placeProfs=DEMO_PLACES.slice();
       setFollowTab(followTab);
-    }).catch(function(){S.tenderProfs=DEMO_TENDERS.slice();S.placeProfs=DEMO_PLACES.slice();setFollowTab(followTab);});
+    }).catch(function(){S.tenderProfs=getDemoTendersWithShift();S.placeProfs=DEMO_PLACES.slice();setFollowTab(followTab);});
 }
 
 function resetDeck(){S.deckIdx=0;renderDeck();}
@@ -1076,7 +1092,7 @@ function findTab(t){findTab_set(t);}
 
 function renderFindTenders(){
   var el=document.getElementById('fl-t');
-  var all=S.allTenders.concat(DEMO_TENDERS.map(function(d){return{name:d.name,est:d.est,vibe:d.vibe,photo:d.photo,likes:d.likes,onShift:d.onShift};}));
+  var all=S.allTenders.concat(getDemoTendersWithShift().map(function(d){return{name:d.name,est:d.est,vibe:d.vibe,photo:d.photo,likes:d.likes,onShift:d.onShift};}));
   var seen={};
   all=all.filter(function(t){if(seen[t.name])return false;seen[t.name]=true;return true;});
   S.allTenders=all;
@@ -1290,7 +1306,7 @@ function renderAdminList(elId,rawItems,type){
   var el=document.getElementById(elId);
   var items;
   if(type==='t'){
-    items=rawItems.concat(DEMO_TENDERS).filter(function(t,i,a){return a.findIndex(function(x){return x.name===t.name;})==i;});
+    items=rawItems.concat(getDemoTendersWithShift()).filter(function(t,i,a){return a.findIndex(function(x){return x.name===t.name;})==i;});
     S.allTenders=items;
   } else if(type==='pl'){
     items=rawItems.concat(DEMO_PLACES).filter(function(p,i,a){return a.findIndex(function(x){return x.name===p.name;})==i;});
@@ -1304,9 +1320,16 @@ function renderAdminList(elId,rawItems,type){
     var nm=type==='p'?((item.firstName||'')+' '+(item.lastName||'')).trim():item.name;
     var ph=item.photo?'<img src="'+esc(item.photo)+'" style="width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;">':'<div class="rav">'+esc(initials(nm))+'</div>';
     var sub=type==='t'?item.est:type==='p'?item.email:item.address;
+    var toggle='';
+    if(type==='t'){
+      var on=!!item.onShift;
+      var isDemo=isDemoTenderName(nm);
+      toggle='<div class="shift-tog" style="margin-left:8px;background:'+(on?'var(--gn)':'var(--eg)')+';flex-shrink:0;" onclick="event.stopPropagation();adminToggleShift(\''+esc(nm)+'\',\''+esc(item.email||'')+'\','+(on?'true':'false')+','+(isDemo?'true':'false')+')" title="Toggle pouring status"><div class="shift-knob" style="left:'+(on?'22px':'2px')+';"></div></div>';
+    }
     return '<div class="rcard" data-pidx="'+i+'" data-ptype="'+type+'" style="cursor:pointer;">'
-      +'<div class="rrow">'+ph+'<div style="flex:1;"><div class="rnm">'+esc(nm)+'</div><div class="rdt">'+esc(sub||'')+'</div></div>'
-      +'<i class="ti ti-chevron-right" style="color:var(--dm);font-size:14px;"></i></div></div>';
+      +'<div class="rrow">'+ph+'<div style="flex:1;"><div class="rnm">'+esc(nm)+(type==='t'&&item.onShift?'<span class="badge-shift" style="margin-left:5px;">Pouring</span>':'')+'</div><div class="rdt">'+esc(sub||'')+'</div></div>'
+      +toggle
+      +'<i class="ti ti-chevron-right" style="color:var(--dm);font-size:14px;margin-left:6px;"></i></div></div>';
   }).join('');
   el.querySelectorAll('.rcard').forEach(function(card){
     card.addEventListener('click',function(){openModal(this.dataset.ptype,parseInt(this.dataset.pidx));});
@@ -1331,6 +1354,23 @@ function adminReq(idx,status){
   var c=document.getElementById('ar'+idx);var a=c?c.querySelector('.racts'):null;
   if(a)a.outerHTML=status==='approved'?'<span class="rst rapst">✓ Approved</span>':'<span class="rst rdnst">✕ Denied</span>';
   toast(status==='approved'?'✓ Approved!':'✕ Denied');
+}
+
+// ── ADMIN SHIFT CONTROL ────────────────────────────────────────────────
+function adminToggleShift(nm,email,curOn,isDemo){
+  var next=!curOn;
+  if(isDemo){
+    setDemoShift(nm,next);
+  } else {
+    fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:'action=shift&email='+enc(email||nm)+'&onShift='+(next?'1':'0')}).catch(function(){});
+    if(S.adminData&&S.adminData.tenders){
+      var t=S.adminData.tenders.find(function(x){return x.name===nm;});
+      if(t)t.onShift=next;
+    }
+  }
+  toast(next?'✓ Marked pouring now':'Marked off shift');
+  renderAdminList('al-t',(S.adminData&&S.adminData.tenders)||[],'t');
 }
 
 // ── TRACTION DASHBOARD ────────────────────────────────────────────────
