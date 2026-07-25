@@ -570,11 +570,13 @@ input.err{border-color:rgba(255,64,64,.5);}
       <button class="atab" id="at-p" onclick="aTab('p')">Patrons</button>
       <button class="atab" id="at-pl" onclick="aTab('pl')">Places</button>
       <button class="atab" id="at-r" onclick="aTab('r')">Requests</button>
+      <button class="atab" id="at-tr" onclick="aTab('tr')">Traction</button>
     </div>
     <div id="av-t"><div id="al-t" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
     <div id="av-p" style="display:none;"><div id="al-p" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
     <div id="av-pl" style="display:none;"><div id="al-pl" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
     <div id="av-r" style="display:none;"><div id="al-r" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
+    <div id="av-tr" style="display:none;"><div id="al-tr" class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div></div>
     <button class="bout" onclick="lockAdmin()" style="margin-top:12px;">LOCK ADMIN</button>
   </div>
 </div>
@@ -1261,10 +1263,11 @@ function lockAdmin(){
   document.getElementById('apin-in').value='';document.getElementById('apin-em').value='';
 }
 function aTab(t){
-  ['t','p','pl','r'].forEach(function(x){
+  ['t','p','pl','r','tr'].forEach(function(x){
     document.getElementById('av-'+x).style.display=x===t?'block':'none';
     document.getElementById('at-'+x).className='atab'+(x===t?' on':'');
   });
+  if(t==='tr'&&S.adminData)renderTraction(S.adminData);
 }
 function loadAdmin(){
   fetch(SCRIPT_URL+'?action=admin')
@@ -1276,6 +1279,7 @@ function loadAdmin(){
       renderAdminList('al-p',d.patrons||[],'p');
       renderAdminList('al-pl',d.places||[],'pl');
       renderAdminReqs(d.requests||[]);
+      renderTraction(d);
       document.getElementById('a-tn').textContent=S.allTenders.length;
       document.getElementById('a-pn').textContent=S.allPatrons.length;
       document.getElementById('a-pl').textContent=S.allPlaces.length;
@@ -1327,6 +1331,84 @@ function adminReq(idx,status){
   var c=document.getElementById('ar'+idx);var a=c?c.querySelector('.racts'):null;
   if(a)a.outerHTML=status==='approved'?'<span class="rst rapst">✓ Approved</span>':'<span class="rst rdnst">✕ Denied</span>';
   toast(status==='approved'?'✓ Approved!':'✕ Denied');
+}
+
+// ── TRACTION DASHBOARD ────────────────────────────────────────────────
+function findTimestamp(item){
+  if(!item)return null;
+  var keys=Object.keys(item);
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i], lk=k.toLowerCase();
+    if(lk.indexOf('time')>-1||lk.indexOf('date')>-1){
+      var v=item[k];
+      var dt=new Date(v);
+      if(!isNaN(dt.getTime()))return dt;
+    }
+  }
+  return null;
+}
+function renderTraction(d){
+  var el=document.getElementById('al-tr');
+  if(!el)return;
+  var tenders=(d.tenders||[]).slice();
+  var patrons=(d.patrons||[]).slice();
+  var places=(d.places||[]).slice();
+  var requests=(d.requests||[]).slice();
+  var totalT=tenders.length,totalP=patrons.length,totalPl=places.length;
+  var totalFollows=requests.length;
+  var approved=requests.filter(function(r){return r.status==='approved';}).length;
+
+  var html='';
+  html+='<div class="srow" style="margin-bottom:8px;">'
+    +'<div class="scrd"><div class="snum" style="color:var(--or);">'+totalT+'</div><div class="slbl">Tenders</div></div>'
+    +'<div class="scrd"><div class="snum" style="color:var(--bl);">'+totalP+'</div><div class="slbl">Patrons</div></div>'
+    +'<div class="scrd"><div class="snum" style="color:var(--pk);">'+totalPl+'</div><div class="slbl">Places</div></div>'
+    +'</div>';
+  html+='<div class="srow" style="margin-bottom:14px;">'
+    +'<div class="scrd"><div class="snum" style="color:var(--gn);">'+totalFollows+'</div><div class="slbl">Total Follows</div></div>'
+    +'<div class="scrd"><div class="snum" style="color:var(--gn);">'+approved+'</div><div class="slbl">Approved</div></div>'
+    +'<div class="scrd"><div class="snum" style="color:var(--tx);">'+(totalT+totalP+totalPl)+'</div><div class="slbl">All Signups</div></div>'
+    +'</div>';
+
+  var events=[];
+  tenders.forEach(function(t){var dt=findTimestamp(t);if(dt)events.push(dt);});
+  patrons.forEach(function(p){var dt=findTimestamp(p);if(dt)events.push(dt);});
+  places.forEach(function(p){var dt=findTimestamp(p);if(dt)events.push(dt);});
+
+  html+='<div class="sec-label">SIGNUPS OVER TIME</div>';
+  if(events.length>=2){
+    events.sort(function(a,b){return a-b;});
+    var byDay={};
+    events.forEach(function(dt){var key=dt.toISOString().slice(0,10);byDay[key]=(byDay[key]||0)+1;});
+    var days=Object.keys(byDay).sort();
+    var cum=0,points=[];
+    days.forEach(function(day){cum+=byDay[day];points.push({day:day,cum:cum});});
+    html+=buildTractionChart(points);
+  } else {
+    html+='<div style="background:var(--cd);border:1px solid var(--eg);border-radius:10px;padding:16px;font-size:12px;color:var(--mu);line-height:1.6;">This chart fills in automatically once your Google Sheet rows include a timestamp column for each signup — no code changes needed on this end once that\'s there.</div>';
+  }
+  el.innerHTML=html;
+}
+function buildTractionChart(points){
+  var w=300,h=140,pad=24;
+  var maxY=points[points.length-1].cum||1;
+  var stepX=(w-pad*2)/Math.max(1,points.length-1);
+  var path='';
+  points.forEach(function(p,i){
+    var x=pad+i*stepX;
+    var y=h-pad-((p.cum/maxY)*(h-pad*2));
+    path+=(i===0?'M':'L')+x.toFixed(1)+','+y.toFixed(1)+' ';
+  });
+  var lastX=pad+(points.length-1)*stepX;
+  var lastY=h-pad-((points[points.length-1].cum/maxY)*(h-pad*2));
+  return '<div style="background:var(--cd);border:1px solid var(--eg);border-radius:10px;padding:12px;">'
+    +'<svg viewBox="0 0 '+w+' '+h+'" style="width:100%;height:140px;overflow:visible;">'
+    +'<line x1="'+pad+'" y1="'+(h-pad)+'" x2="'+(w-pad)+'" y2="'+(h-pad)+'" stroke="#2a2a3a" stroke-width="1"/>'
+    +'<path d="'+path.trim()+'" fill="none" stroke="#00e676" stroke-width="2"/>'
+    +'<circle cx="'+lastX.toFixed(1)+'" cy="'+lastY.toFixed(1)+'" r="4" fill="#00e676"/>'
+    +'</svg>'
+    +'<div style="text-align:center;font-size:10px;color:var(--mu);margin-top:6px;">'+points[0].day+' → '+points[points.length-1].day+' · Cumulative signups</div>'
+    +'</div>';
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────
