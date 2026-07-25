@@ -1209,8 +1209,12 @@ function renderFollowing(){
     .then(function(r){return r.json();})
     .then(function(d){
       if(d.result!=='success'){renderFollowingFallback(ft,fp);return;}
+      var tenderList=(d.tenders||[]).concat(getDemoTendersWithShift()).filter(function(t,i,a){return a.findIndex(function(x){return x.name===t.name;})==i;});
+      var placeList=(d.places||[]).concat(DEMO_PLACES).filter(function(p,i,a){return a.findIndex(function(x){return x.name===p.name;})==i;});
+      S.allTenders=tenderList;
+      S.allPlaces=placeList;
       var placeNameSet={};
-      (d.places||[]).concat(DEMO_PLACES).forEach(function(p){placeNameSet[p.name]=true;});
+      placeList.forEach(function(p){placeNameSet[p.name]=true;});
       var myEmail=(S.myProf.email||'').toLowerCase().trim();
       var approved=(d.requests||[]).filter(function(r){
         return r.status==='approved' && (r.patronEmail||'').toLowerCase().trim()===myEmail;
@@ -1224,18 +1228,35 @@ function renderFollowing(){
       });
       S.myProf.following={tenders:tenderNames,places:placeNames};
       saveProfile(S.myProf);
-      renderFollowingLists(ft,fp,tenderNames,placeNames);
+      renderFollowingLists(ft,fp,tenderNames,placeNames,tenderList,placeList);
     }).catch(function(){renderFollowingFallback(ft,fp);});
 }
-function renderFollowingLists(ft,fp,tenderNames,placeNames){
+function renderFollowingLists(ft,fp,tenderNames,placeNames,tenderList,placeList){
+  tenderList=tenderList||[];placeList=placeList||[];
   if(!tenderNames.length){ft.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No approved tenders yet. Swipe right to send follow requests.</div>';}
-  else{ft.innerHTML=tenderNames.map(function(t){return '<div class="plist-item"><div class="plist-av-ph">'+esc(initials(t))+'</div><div><div class="plist-nm">'+esc(t)+'</div></div></div>';}).join('');}
+  else{
+    ft.innerHTML=tenderNames.map(function(nm){
+      var idx=tenderList.findIndex(function(t){return t.name===nm;});
+      var t=idx>-1?tenderList[idx]:null;
+      var ph=t&&t.photo?'<img class="plist-av" src="'+esc(t.photo)+'" alt="">':'<div class="plist-av-ph">'+esc(initials(nm))+'</div>';
+      return '<div class="plist-item" data-pidx="'+idx+'" data-ptype="t">'+ph+'<div style="flex:1;"><div class="plist-nm">'+esc(nm)+'</div></div><i class="ti ti-chevron-right" style="color:var(--dm);font-size:14px;"></i></div>';
+    }).join('');
+    addListeners(ft,'t');
+  }
   if(!placeNames.length){fp.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No approved places yet. Swipe right on a venue to follow.</div>';}
-  else{fp.innerHTML=placeNames.map(function(p){return '<div class="plist-item"><div class="plist-av-ph" style="border-color:rgba(255,64,129,.2);color:var(--pk);">'+esc(initials(p))+'</div><div><div class="plist-nm">'+esc(p)+'</div></div></div>';}).join('');}
+  else{
+    fp.innerHTML=placeNames.map(function(nm){
+      var idx=placeList.findIndex(function(p){return p.name===nm;});
+      var p=idx>-1?placeList[idx]:null;
+      var ph=p&&p.photo?'<img class="plist-av" src="'+esc(p.photo)+'" alt="" style="border-radius:8px;object-fit:cover;">':'<div class="plist-av-ph" style="border-color:rgba(255,64,129,.2);color:var(--pk);border-radius:8px;">'+esc(initials(nm))+'</div>';
+      return '<div class="plist-item" data-pidx="'+idx+'" data-ptype="pl">'+ph+'<div style="flex:1;"><div class="plist-nm">'+esc(nm)+'</div></div><i class="ti ti-chevron-right" style="color:var(--dm);font-size:14px;"></i></div>';
+    }).join('');
+    addListeners(fp,'pl');
+  }
 }
 function renderFollowingFallback(ft,fp){
   var following=(S.myProf&&S.myProf.following)||{tenders:[],places:[]};
-  renderFollowingLists(ft,fp,following.tenders||[],following.places||[]);
+  renderFollowingLists(ft,fp,following.tenders||[],following.places||[],S.allTenders||[],S.allPlaces||[]);
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────
