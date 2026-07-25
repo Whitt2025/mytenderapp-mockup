@@ -1198,11 +1198,44 @@ function followUser(type,name){
 function renderFollowing(){
   var ft=document.getElementById('fol-tenders'),fp=document.getElementById('fol-places');
   if(!S.myProf){return;}
-  var following=S.myProf.following||{tenders:[],places:[]};
-  if(!following.tenders||!following.tenders.length){ft.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No approved tenders yet. Swipe right to send follow requests.</div>';}
-  else{ft.innerHTML=following.tenders.map(function(t){return '<div class="plist-item"><div class="plist-av-ph">'+esc(initials(t))+'</div><div><div class="plist-nm">'+esc(t)+'</div></div></div>';}).join('');}
-  if(!following.places||!following.places.length){fp.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No approved places yet. Swipe right on a venue to follow.</div>';}
-  else{fp.innerHTML=following.places.map(function(p){return '<div class="plist-item"><div class="plist-av-ph" style="border-color:rgba(255,64,129,.2);color:var(--pk);">'+esc(initials(p))+'</div><div><div class="plist-nm">'+esc(p)+'</div></div></div>';}).join('');}
+  if(S.myProf.type!=='patron'){
+    ft.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">Following is available on Patron accounts.</div>';
+    fp.innerHTML='';
+    return;
+  }
+  ft.innerHTML='<div class="ldst"><div class="ldsp"></div><div class="ldtx">Loading…</div></div>';
+  fp.innerHTML='';
+  fetch(SCRIPT_URL+'?action=admin')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.result!=='success'){renderFollowingFallback(ft,fp);return;}
+      var placeNameSet={};
+      (d.places||[]).concat(DEMO_PLACES).forEach(function(p){placeNameSet[p.name]=true;});
+      var myEmail=(S.myProf.email||'').toLowerCase().trim();
+      var approved=(d.requests||[]).filter(function(r){
+        return r.status==='approved' && (r.patronEmail||'').toLowerCase().trim()===myEmail;
+      });
+      var tenderNames=[],placeNames=[];
+      approved.forEach(function(r){
+        var nm=r.tenderName||'';
+        if(!nm)return;
+        if(placeNameSet[nm]){if(placeNames.indexOf(nm)===-1)placeNames.push(nm);}
+        else{if(tenderNames.indexOf(nm)===-1)tenderNames.push(nm);}
+      });
+      S.myProf.following={tenders:tenderNames,places:placeNames};
+      saveProfile(S.myProf);
+      renderFollowingLists(ft,fp,tenderNames,placeNames);
+    }).catch(function(){renderFollowingFallback(ft,fp);});
+}
+function renderFollowingLists(ft,fp,tenderNames,placeNames){
+  if(!tenderNames.length){ft.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No approved tenders yet. Swipe right to send follow requests.</div>';}
+  else{ft.innerHTML=tenderNames.map(function(t){return '<div class="plist-item"><div class="plist-av-ph">'+esc(initials(t))+'</div><div><div class="plist-nm">'+esc(t)+'</div></div></div>';}).join('');}
+  if(!placeNames.length){fp.innerHTML='<div style="font-size:12px;color:var(--dm);font-style:italic;">No approved places yet. Swipe right on a venue to follow.</div>';}
+  else{fp.innerHTML=placeNames.map(function(p){return '<div class="plist-item"><div class="plist-av-ph" style="border-color:rgba(255,64,129,.2);color:var(--pk);">'+esc(initials(p))+'</div><div><div class="plist-nm">'+esc(p)+'</div></div></div>';}).join('');}
+}
+function renderFollowingFallback(ft,fp){
+  var following=(S.myProf&&S.myProf.following)||{tenders:[],places:[]};
+  renderFollowingLists(ft,fp,following.tenders||[],following.places||[]);
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────
